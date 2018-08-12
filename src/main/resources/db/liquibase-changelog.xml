@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="idglebik" id="1">
+        <createTable tableName="USER">
+            <column name="ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AGE" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SEX" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="idglebik" id="1.1">
+        <addPrimaryKey columnNames="ID" constraintName="id_PK" tableName="USER"/>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="addAutoIncrement-example">
+        <addAutoIncrement columnDataType="int"
+                          columnName="ID"
+                          incrementBy="1"
+                          startWith="1"
+                          tableName="USER"/>
+    </changeSet>
+    <changeSet id="1.2" author="idglebik">
+        <addDefaultValue tableName="USER" columnName="SEX" defaultValue="'male', 'female'"/>
+    </changeSet>
+    <changeSet id="1.3" author="idglebik">
+        <dropColumn tableName="USER" columnName="SEX"/>
+        <addColumn tableName="USER">
+            <column name="POSITION" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
