@@ -2,7 +2,8 @@ package com.wgdetective.projectstartdemo.service;
 
 import com.wgdetective.projectstartdemo.MockData;
 import com.wgdetective.projectstartdemo.converter.UserConverter;
-import com.wgdetective.projectstartdemo.dbo.Sex;
+import com.wgdetective.projectstartdemo.enumerated.Position;
+import com.wgdetective.projectstartdemo.enumerated.Sex;
 import com.wgdetective.projectstartdemo.dbo.UserDbo;
 import com.wgdetective.projectstartdemo.dto.UserDto;
 import com.wgdetective.projectstartdemo.repository.UserRepository;
@@ -43,8 +44,10 @@ public class UserServiceTest {
         personDbo.setAge(24);
         Set<Sex> set = new HashSet<>();
         set.add(Sex.male);
+        Set<Position> set2 = new HashSet<>();
+        set2.add(Position.developer);
         personDbo.setSex(set);
-        personDbo.setPosition("worker");
+        personDbo.setPosition(set2);
 
         doReturn(personDbo).when(userRepository).save(any(UserDbo.class));
 

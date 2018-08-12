@@ -1,6 +1,7 @@
 package com.wgdetective.projectstartdemo;
 
-import com.wgdetective.projectstartdemo.dbo.Sex;
+import com.wgdetective.projectstartdemo.enumerated.Position;
+import com.wgdetective.projectstartdemo.enumerated.Sex;
 import com.wgdetective.projectstartdemo.dbo.UserDbo;
 import com.wgdetective.projectstartdemo.dto.UserDto;
 
@@ -14,7 +15,9 @@ public class MockData {
         userDbo.setFirstName("userDbo first name");
         userDbo.setLastName("userDbo last name");
         userDbo.setAge(23);
-        userDbo.setPosition("userDbo position");
+        Set set2 = new HashSet();
+        set2.add(Position.manager);
+        userDbo.setPosition(set2);
         Set set = new HashSet();
         set.add(Sex.female);
         userDbo.setSex(set);
@@ -26,7 +29,9 @@ public class MockData {
         userDto.setFirstName("userDto first name");
         userDto.setLastName("userDto last name");
         userDto.setAge(23);
-        userDto.setPosition("userDto position");
+        Set set2 = new HashSet();
+        set2.add(Position.manager);
+        userDto.setPosition(set2);
         Set set = new HashSet();
         set.add(Sex.female);
         userDto.setSex(set);

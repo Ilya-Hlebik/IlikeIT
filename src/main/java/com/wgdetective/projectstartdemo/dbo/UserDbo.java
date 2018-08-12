@@ -1,4 +1,6 @@
 package com.wgdetective.projectstartdemo.dbo;
+import com.wgdetective.projectstartdemo.enumerated.Position;
+import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,12 +23,16 @@ public class UserDbo {
     private String lastName;
     @NotNull
     private int age;
-    @NotNull
-    private String position;
 
     @NotNull
     @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name="USER_ID"))
     @Enumerated(EnumType.STRING)
     private Set<Sex> sex;
+
+    @NotNull
+    @ElementCollection(targetClass = Position.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
+    @Enumerated(EnumType.STRING)
+    private Set<Position> position;
 }

@@ -44,4 +44,7 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="1.4" author="idglebik">
+        <dropColumn tableName="USER" columnName="POSITION"/>
+    </changeSet>
 </databaseChangeLog>
