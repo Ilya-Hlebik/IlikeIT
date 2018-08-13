@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @ApiOperation("create user")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PostMapping("/create")
     @ResponseBody
     public String createUser(@RequestBody final UserDto userDto){
         userService.createUser(userDto);
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @ApiOperation("show list of users")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping("/list")
     @ResponseBody
     public List<UserDto> getAllPersons() {
         return userService.getUserList();
