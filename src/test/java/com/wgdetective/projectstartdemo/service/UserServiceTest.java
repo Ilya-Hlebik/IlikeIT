@@ -47,7 +47,7 @@ public class UserServiceTest {
         Set<Position> set2 = new HashSet<>();
         set2.add(Position.developer);
         personDbo.setSex(set);
-        personDbo.setPosition(set2);
+        /*personDbo.setPosition(set2);*/
 
         doReturn(personDbo).when(userRepository).save(any(UserDbo.class));
 

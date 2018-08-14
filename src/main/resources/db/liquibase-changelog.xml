@@ -47,4 +47,58 @@
     <changeSet id="1.4" author="idglebik">
         <dropColumn tableName="USER" columnName="POSITION"/>
     </changeSet>
+    <changeSet author="idglebik" id="1.5">
+        <createTable tableName="PLACE">
+            <column name="ID" type="INT" >
+                <constraints nullable="false" />
+            </column>
+            <column name="CITY" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESS" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="idglebik" id="1.6">
+        <addPrimaryKey columnNames="ID" constraintName="id_PK" tableName="PLACE"/>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="1.7">
+        <addAutoIncrement columnDataType="int"
+                          columnName="ID"
+                          incrementBy="1"
+                          startWith="1"
+                          tableName="PLACE"/>
+    </changeSet>
+    <changeSet author="idglebik" id="1.8">
+        <createTable tableName="POSITION">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="user_pk"/>
+            </column>
+            <column name="POSITION" type="ENUM('Worker', 'TESTER')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="USER_POSITION">
+            <column name="USER_ID" type="INT" >
+                <constraints nullable="false" />
+            </column>
+            <column name="POSITION_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="USER_ID, POSITION_ID" constraintName="id_PK" tableName="USER_POSITION"/>
+
+
+
+        <addForeignKeyConstraint baseTableName="USER_POSITION" baseColumnNames="USER_ID" constraintName="FK_USER_POSITION__USER_ID" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="USER_POSITION" baseColumnNames="POSITION_ID" constraintName="FK_USER_POSITION__POSITION_ID" referencedTableName="POSITION"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
 </databaseChangeLog>

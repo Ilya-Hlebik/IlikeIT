@@ -17,3 +17,4 @@ public class UserDto {
     private Set<Sex> sex;
     private Set<Position> position;
 }
+

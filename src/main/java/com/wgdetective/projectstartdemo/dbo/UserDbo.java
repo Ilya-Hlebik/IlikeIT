@@ -11,17 +11,21 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name ="User")
+@Table(name ="USER")
 public class UserDbo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="ID")
     private long id;
     @NotNull
+    @Column(name ="FIRST_NAME")
     private String firstName;
     @NotNull
+    @Column(name ="LAST_NAME")
     private String lastName;
     @NotNull
+    @Column(name ="AGE")
     private int age;
 
     @NotNull
@@ -30,9 +34,11 @@ public class UserDbo {
     @Enumerated(EnumType.STRING)
     private Set<Sex> sex;
 
-    @NotNull
+  /*  @NotNull
     @ElementCollection(targetClass = Position.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
     @Enumerated(EnumType.STRING)
     private Set<Position> position;
+*/
+/*    private Sex sex2;*/
 }
