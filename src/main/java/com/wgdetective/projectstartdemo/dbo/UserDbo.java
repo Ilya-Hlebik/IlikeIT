@@ -27,18 +27,25 @@ public class UserDbo {
     @NotNull
     @Column(name ="AGE")
     private int age;
-
+/*
     @NotNull
     @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name="USER_ID"))
     @Enumerated(EnumType.STRING)
     private Set<Sex> sex;
 
-  /*  @NotNull
+   @NotNull
     @ElementCollection(targetClass = Position.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
     @Enumerated(EnumType.STRING)
-    private Set<Position> position;
-*/
-/*    private Sex sex2;*/
+    private Set<Position> position;*/
+@ManyToMany(fetch = FetchType.LAZY,
+        cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+        })
+@JoinTable(name = "USER_POSITION",
+        joinColumns = { @JoinColumn(name = "USER_ID") },
+        inverseJoinColumns = { @JoinColumn(name = "POSITION_ID") })
+    private Set<PositionDbo> position;
 }

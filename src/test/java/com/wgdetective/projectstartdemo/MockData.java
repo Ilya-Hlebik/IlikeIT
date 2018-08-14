@@ -18,9 +18,9 @@ public class MockData {
     /*    Set set2 = new HashSet();
         set2.add(Position.manager);
         userDbo.setPosition(set2);*/
-        Set set = new HashSet();
+      /*  Set set = new HashSet();
         set.add(Sex.female);
-        userDbo.setSex(set);
+        userDbo.setSex(set);*/
         return userDbo;
     }
 
@@ -32,9 +32,9 @@ public class MockData {
        /* Set set2 = new HashSet();
         set2.add(Position.manager);
         userDto.setPosition(set2);*/
-        Set set = new HashSet();
+/*        Set set = new HashSet();
         set.add(Sex.female);
-        userDto.setSex(set);
+        userDto.setSex(set);*/
         return userDto;
     }
 }

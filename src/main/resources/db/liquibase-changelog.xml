@@ -78,7 +78,7 @@
             <column name="ID" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="user_pk"/>
             </column>
-            <column name="POSITION" type="ENUM('Worker', 'TESTER')">
+            <column name="POSITION" type="ENUM('worker', 'tester')">
                 <constraints nullable="false"/>
             </column>
         </createTable>

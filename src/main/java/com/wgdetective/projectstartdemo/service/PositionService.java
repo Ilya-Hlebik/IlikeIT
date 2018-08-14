@@ -13,22 +13,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
-    private final UserRepository userRepository;
-    private final UserConverter userConverter;
+public class PositionService {
+    private final PositionRepository positionRepository;
+    private final PositionConverter positionConverter;
 
     @Autowired
-    public UserService(final UserRepository userRepository, final UserConverter userConverter){
-        this.userRepository = userRepository;
-        this.userConverter = userConverter;
-
+    public PositionService(final PositionRepository positionRepository, final PositionConverter positionConverter){
+        this.positionRepository = positionRepository;
+        this.positionConverter = positionConverter;
     }
 
-    public void createUser(final UserDto userDto){
-        userRepository.save(userConverter.convertToDbo(userDto));
+    public void createPositionForUser(final PositionDto positionDto){
+        positionRepository.save(positionConverter.convertToDbo(positionDto));
     }
 
-    public List<UserDto> getUserList(){
-        return userRepository.findAll().stream().map(userConverter::convertToDto).collect(Collectors.toList());
-    }
 }

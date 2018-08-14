@@ -1,5 +1,6 @@
 package com.wgdetective.projectstartdemo.dto;
 
+import com.wgdetective.projectstartdemo.dbo.PositionDbo;
 import com.wgdetective.projectstartdemo.enumerated.Position;
 import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
@@ -14,7 +15,8 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private int age;
-    private Set<Sex> sex;
-    private Set<Position> position;
+    private Position position;
+/*    private Set<Sex> sex;
+    private Set<Position> position*/;
 }
 
