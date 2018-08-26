@@ -16,7 +16,5 @@ public class UserDto {
     private String lastName;
     private int age;
     private Set<PositionDto> position;
-/*    private Set<Sex> sex;
-    private Set<Position> position*/;
 }
 

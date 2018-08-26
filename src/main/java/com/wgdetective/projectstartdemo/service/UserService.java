@@ -9,11 +9,16 @@ import com.wgdetective.projectstartdemo.dto.UserDto;
 import com.wgdetective.projectstartdemo.enumerated.Position;
 import com.wgdetective.projectstartdemo.repository.PositionRepository;
 import com.wgdetective.projectstartdemo.repository.UserRepository;
+import javafx.geometry.Pos;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,15 +38,8 @@ public class UserService {
 
     @Transactional
     public void createUser(final UserDto userDto){
-    /*    for (PositionDto position: userDto.getPosition()){
-           List<PositionDbo>  positionDbo =   (positionRepository.findByPosition(position.getPosition()));
-           for (PositionDbo positionDbo1: positionDbo) {
-               System.out.println(positionDbo1.getPosition());
-               userDto.getPosition().add(positionConverter.convertToDto(positionDbo1));
-
-           }
-        }*/
         userRepository.save(userConverter.convertToDbo(userDto));
+
     }
 
     public List<UserDto> getUserList(){

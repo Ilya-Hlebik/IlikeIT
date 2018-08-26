@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +39,7 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     }
 
     @Transactional
-    private PositionDbo getPositionDBO(PositionDto positionDto) {
+    public PositionDbo getPositionDBO(PositionDto positionDto) {
          Optional<PositionDbo> positionDbo = positionRepository.findByPositionName(positionDto.getPositionName());
         return positionDbo.orElseGet(() -> positionRepository.save(positionConverter.convertToDbo(positionDto)));
     }

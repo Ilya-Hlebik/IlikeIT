@@ -1,6 +1,9 @@
 package com.wgdetective.projectstartdemo.dbo;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.wgdetective.projectstartdemo.enumerated.Position;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,25 +16,23 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name ="POSITION")
+@Table(name = "POSITION")
 public class PositionDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="ID")
+    @Column(name = "ID")
     private long id;
 
     @NotNull
-    @Column(name ="POSITION_NAME")
-    private String positionName;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "POSITION_NAME")
+    private Position positionName;
 
-  /*   @ManyToMany(fetch = FetchType.LAZY,
-            cascade = { CascadeType.PERSIST,
-                        CascadeType.MERGE },
-            mappedBy = "position")*/
     @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "USER_POSITION",
-          joinColumns = { @JoinColumn(name = "POSITION_ID") },
-          inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
+    @JoinTable(name = "USER_POSITION",
+            joinColumns = { @JoinColumn(name = "POSITION_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     @EqualsAndHashCode.Exclude
-    private Set<UserDbo> user = new HashSet<>();
+    @JsonManagedReference
+    private Set<UserDbo> users = new HashSet<>();
 }
