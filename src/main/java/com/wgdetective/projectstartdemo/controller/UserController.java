@@ -1,5 +1,6 @@
 package com.wgdetective.projectstartdemo.controller;
 
+import com.wgdetective.projectstartdemo.dbo.UserDbo;
 import com.wgdetective.projectstartdemo.dto.PositionDto;
 import com.wgdetective.projectstartdemo.dto.UserDto;
 import com.wgdetective.projectstartdemo.service.UserService;

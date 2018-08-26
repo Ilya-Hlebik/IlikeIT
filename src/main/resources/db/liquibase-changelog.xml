@@ -21,6 +21,9 @@
             <column name="SEX" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
+            <column name="PLACE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="idglebik" id="1.1">
@@ -72,16 +75,36 @@
                           incrementBy="1"
                           startWith="1"
                           tableName="PLACE"/>
+        <addForeignKeyConstraint baseTableName="USER" baseColumnNames="PLACE_ID" constraintName="fk_USER_PLACE" referencedTableName="PLACE"
+                                 referencedColumnNames="ID"/>
     </changeSet>
     <changeSet author="idglebik" id="1.8">
         <createTable tableName="POSITION">
             <column name="ID" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="user_pk"/>
             </column>
-            <column name="POSITION" type="ENUM('worker', 'tester')">
-                <constraints nullable="false"/>
+            <column name="POSITION_NAME" type="ENUM('worker', 'developer', 'support', 'businessAnalyst', 'tester', 'manager')">
+                <constraints nullable="false" />
             </column>
         </createTable>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">worker</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">developer</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">support</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">businessAnalyst</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">tester</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">manager</column>
+        </insert>
         <createTable tableName="USER_POSITION">
             <column name="USER_ID" type="INT" >
                 <constraints nullable="false" />

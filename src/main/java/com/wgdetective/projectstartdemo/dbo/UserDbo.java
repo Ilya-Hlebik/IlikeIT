@@ -2,6 +2,7 @@ package com.wgdetective.projectstartdemo.dbo;
 import com.wgdetective.projectstartdemo.enumerated.Position;
 import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -39,13 +40,10 @@ public class UserDbo {
     @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
     @Enumerated(EnumType.STRING)
     private Set<Position> position;*/
-@ManyToMany(fetch = FetchType.LAZY,
-        cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-        })
+@ManyToMany(fetch = FetchType.LAZY)
 @JoinTable(name = "USER_POSITION",
         joinColumns = { @JoinColumn(name = "USER_ID") },
         inverseJoinColumns = { @JoinColumn(name = "POSITION_ID") })
+@EqualsAndHashCode.Exclude
     private Set<PositionDbo> position;
 }
