@@ -7,6 +7,7 @@ import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,24 +32,34 @@ public class UserDbo {
     @NotNull
     @Column(name = "AGE")
     private int age;
-
+    @Column(name = "CITY")
+    private String city;
+    @Column(name = "COUNTRY")
+    private String country;
+    @Column(name = "ADDRESS")
+    private String address;
+    @Column(name = "GENERAL_INFO")
+    private String generalInfo;
+    @Column(name = "OTHER_INFO")
+    private String otherInfo;
     @NotNull
     @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name="USER_ID"))
+    @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name = "USER_ID"))
     @Enumerated(EnumType.STRING)
+    @EqualsAndHashCode.Exclude
     private Set<Sex> sex;
 
-/*       @NotNull
-        @ElementCollection(targetClass = Position.class, fetch = FetchType.EAGER)
-        @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
-        @Enumerated(EnumType.STRING)
-        private Set<Position> position;*/
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_POSITION",
-            joinColumns = { @JoinColumn(name = "USER_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "POSITION_ID") })
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "POSITION_ID")})
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonBackReference
     private Set<PositionDbo> position;
 
+    @OneToMany(mappedBy = "userDbo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    public Set<StudyDbo> studys;
 }

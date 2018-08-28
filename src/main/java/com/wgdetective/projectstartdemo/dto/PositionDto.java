@@ -10,6 +10,5 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class PositionDto {
-    private long id;
     private Position positionName;
 }

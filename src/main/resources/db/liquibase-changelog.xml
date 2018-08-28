@@ -18,30 +18,42 @@
             <column name="AGE" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="COUNTRY" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CITY" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ADDRESS" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="GENERAL_INFO" type="LONGTEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OTHER_INFO" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
             <!-- <column name="PLACE_ID" type="INT">
                  <constraints nullable="false"/>
              </column>-->
         </createTable>
     </changeSet>
     <changeSet author="idglebik" id="1.5">
-        <createTable tableName="PLACE">
+        <createTable tableName="STUDY">
             <column name="ID" type="BIGINT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="place_pk"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="study_pk"/>
             </column>
-            <column name="CITY" type="VARCHAR(64)">
-                <constraints nullable="false"/>
+            <column name="INSTITUTION" type="VARCHAR(64)">
+                <constraints nullable="true"/>
             </column>
-            <column name="COUNTRY" type="VARCHAR(64)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ADDRESS" type="VARCHAR(128)">
+            <column name="USER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet author="liquibase-docs" id="1.7">
-        <!--   <addForeignKeyConstraint baseTableName="USER" baseColumnNames="PLACE_ID" constraintName="fk_USER_PLACE" referencedTableName="PLACE"
-                                    referencedColumnNames="ID"/>-->
+         <addForeignKeyConstraint baseTableName="STUDY" baseColumnNames="USER_ID" constraintName="fk_STUDY_USER" referencedTableName="USER"
+                                    referencedColumnNames="ID"/>
     </changeSet>
     <changeSet author="idglebik" id="1.8">
         <createTable tableName="POSITION">

@@ -1,10 +1,8 @@
 package com.wgdetective.projectstartdemo.dto;
 
-import com.wgdetective.projectstartdemo.dbo.PositionDbo;
-import com.wgdetective.projectstartdemo.dbo.UserDbo;
-import com.wgdetective.projectstartdemo.enumerated.Position;
 import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -12,11 +10,19 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class UserDto {
-    private long id;
     private String firstName;
     private String lastName;
     private int age;
+    private String city;
+    private String country;
+    private String address;
+    private String generalInfo;
+    private String otherInfo;
+    @EqualsAndHashCode.Exclude
     private Set<PositionDto> position;
+    @EqualsAndHashCode.Exclude
     private Set<Sex> sex;
+    @EqualsAndHashCode.Exclude
+    public Set<StudyDto> studys;
 }
 
