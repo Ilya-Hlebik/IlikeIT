@@ -55,10 +55,21 @@
         </createTable>
         <insert tableName="POSITION">
             <column name="POSITION_NAME">worker</column>
+        </insert>
+        <insert tableName="POSITION">
+            <column name="POSITION_NAME">developer</column>
+        </insert>
+        <insert tableName="POSITION">
             <column name="POSITION_NAME">support</column>
+        </insert>
+        <insert tableName="POSITION">
             <column name="POSITION_NAME">developer</column>
             <column name="POSITION_NAME">businessAnalyst</column>
+        </insert>
+        <insert tableName="POSITION">
             <column name="POSITION_NAME">tester</column>
+        </insert>
+        <insert tableName="POSITION">
             <column name="POSITION_NAME">manager</column>
         </insert>
         <createTable tableName="USER_POSITION">
@@ -74,6 +85,20 @@
                                  referencedColumnNames="ID"/>
         <addForeignKeyConstraint baseTableName="USER_POSITION" baseColumnNames="POSITION_ID"
                                  constraintName="FK_USER_POSITION__POSITION_ID" referencedTableName="POSITION"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="idglebik" id="1.9">
+        <createTable tableName="USER_SEX">
+            <column name="USER_ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="USER_ID_pk"/>
+            </column>
+            <column name="SEX"
+                    type="ENUM('male', 'female')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="USER_SEX" baseColumnNames="USER_ID" constraintName="FK_USER_ID_USER_ID" referencedTableName="USER"
                                  referencedColumnNames="ID"/>
     </changeSet>
 </databaseChangeLog>

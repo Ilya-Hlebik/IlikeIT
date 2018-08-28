@@ -34,5 +34,6 @@ public class PositionDbo {
             inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
-    private Set<UserDbo> users = new HashSet<>();
+    private Set<UserDbo> users;
+
 }

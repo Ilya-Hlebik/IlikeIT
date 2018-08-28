@@ -38,12 +38,19 @@ public class UserService {
 
     @Transactional
     public void createUser(final UserDto userDto){
-        userRepository.save(userConverter.convertToDbo(userDto));
-
+        final UserDbo userDbo = new UserDbo();
+        BeanUtils.copyProperties(userDto, userDbo);
+        userDbo.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
+        userRepository.save(userDbo);
     }
 
     public List<UserDto> getUserList(){
 
          return userRepository.findAll().stream().map(userConverter::convertToDto).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PositionDbo getPositionDBO(PositionDto positionDto) {
+        return positionRepository.findByPositionName(positionDto.getPositionName());
     }
 }

@@ -31,14 +31,14 @@ public class UserDbo {
     @NotNull
     @Column(name = "AGE")
     private int age;
-    /*
-        @NotNull
-        @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
-        @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name="USER_ID"))
-        @Enumerated(EnumType.STRING)
-        private Set<Sex> sex;
 
-       @NotNull
+    @NotNull
+    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name="USER_ID"))
+    @Enumerated(EnumType.STRING)
+    private Set<Sex> sex;
+
+/*       @NotNull
         @ElementCollection(targetClass = Position.class, fetch = FetchType.EAGER)
         @CollectionTable(name = "USER_POSITION", joinColumns = @JoinColumn(name="USER_ID"))
         @Enumerated(EnumType.STRING)
@@ -50,4 +50,5 @@ public class UserDbo {
     @EqualsAndHashCode.Exclude
     @JsonBackReference
     private Set<PositionDbo> position;
+
 }

@@ -18,10 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserConverter implements DtoConverter<UserDto, UserDbo>{
-    @Autowired
-    PositionRepository positionRepository;
-    @Autowired
-    PositionConverter positionConverter;
 
     @Override
     public UserDto convertToDto(final UserDbo dbo) {
@@ -34,13 +30,6 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     public UserDbo convertToDbo(final UserDto dto) {
         final UserDbo userDbo = new UserDbo();
         BeanUtils.copyProperties(dto, userDbo);
-        userDbo.setPosition(dto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
         return userDbo;
-    }
-
-    @Transactional
-    public PositionDbo getPositionDBO(PositionDto positionDto) {
-         Optional<PositionDbo> positionDbo = positionRepository.findByPositionName(positionDto.getPositionName());
-        return positionDbo.orElseGet(() -> positionRepository.save(positionConverter.convertToDbo(positionDto)));
     }
 }
