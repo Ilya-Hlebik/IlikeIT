@@ -2,7 +2,8 @@ package com.wgdetective.projectstartdemo.dbo;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.wgdetective.projectstartdemo.enumerated.Hate;
+import com.wgdetective.projectstartdemo.enumerated.Language;
+import com.wgdetective.projectstartdemo.enumerated.Position;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "I_HATE")
-public class HateDbo {
+@Table(name = "LANGUAGE")
+public class LangDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -24,12 +25,12 @@ public class HateDbo {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "HATE")
-    private Hate hate;
+    @Column(name = "LANG")
+    private Language language;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "USER_I_HATE",
-            joinColumns = {@JoinColumn(name = "I_HATE_ID")},
+    @JoinTable(name = "USER_LANGUAGE",
+            joinColumns = {@JoinColumn(name = "LANGUAGE_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

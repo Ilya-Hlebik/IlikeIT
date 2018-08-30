@@ -28,8 +28,8 @@ public class LikeDbo {
     private Like like;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "USER_LIKE",
-            joinColumns = {@JoinColumn(name = "LIKE_ID")},
+    @JoinTable(name = "USER_I_LIKE",
+            joinColumns = {@JoinColumn(name = "I_LIKE_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -33,9 +33,6 @@
             <column name="OTHER_INFO" type="VARCHAR(45)">
                 <constraints nullable="true"/>
             </column>
-            <!-- <column name="PLACE_ID" type="INT">
-                 <constraints nullable="false"/>
-             </column>-->
         </createTable>
     </changeSet>
     <changeSet author="idglebik" id="1.5">
@@ -111,6 +108,117 @@
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="USER_SEX" baseColumnNames="USER_ID" constraintName="FK_USER_ID_USER_ID" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet id="create table language, many to many with user" author="idglebik">
+        <createTable tableName="LANGUAGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="lang_pk"/>
+            </column>
+            <column name="LANG"
+                    type="ENUM('en', 'ru', 'de')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="LANGUAGE">
+            <column name="LANG">de</column>
+        </insert>
+        <insert tableName="LANGUAGE">
+            <column name="LANG">ru</column>
+        </insert>
+        <insert tableName="LANGUAGE">
+            <column name="LANG">en</column>
+        </insert>
+
+        <createTable tableName="USER_LANGUAGE">
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_id_pk"/>
+            </column>
+            <column name="LANGUAGE_ID" type="BIGINT">
+                <constraints nullable="false"  primaryKey="true" primaryKeyName="language_id_pk"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="USER_LANGUAGE" baseColumnNames="USER_ID"
+                                 constraintName="FK_USER_LANGUAGE__USER_ID" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="USER_LANGUAGE" baseColumnNames="LANGUAGE_ID"
+                                 constraintName="FK_USER_LANGUAGE__LANGUAGE_ID" referencedTableName="LANGUAGE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet id="create table I_LIKE, many to many with user" author="idglebik">
+        <createTable tableName="I_LIKE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="i_like_pk"/>
+            </column>
+            <column name="LIKE"
+                    type="ENUM('books', 'movies', 'people', 'coding')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="I_LIKE">
+            <column name="LIKE">books</column>
+        </insert>
+        <insert tableName="I_LIKE">
+            <column name="LIKE">movies</column>
+        </insert>
+        <insert tableName="I_LIKE">
+            <column name="LIKE">people</column>
+        </insert>
+        <insert tableName="I_LIKE">
+            <column name="LIKE">coding</column>
+        </insert>
+
+        <createTable tableName="USER_I_LIKE">
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_id_pk"/>
+            </column>
+            <column name="I_LIKE_ID" type="BIGINT">
+                <constraints nullable="false"  primaryKey="true" primaryKeyName="i_like_id_pk"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="USER_I_LIKE" baseColumnNames="USER_ID"
+                                 constraintName="FK_I_LIKE__USER_ID" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="USER_I_LIKE" baseColumnNames="I_LIKE_ID"
+                                 constraintName="FK_USER_I_LIKE__I_LIKE_ID" referencedTableName="I_LIKE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet id="create table I_HATE, many to many with user" author="idglebik">
+        <createTable tableName="I_HATE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="i_hate_pk"/>
+            </column>
+            <column name="HATE"
+                    type="ENUM('books', 'movies', 'people', 'coding')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="I_HATE">
+            <column name="HATE">books</column>
+        </insert>
+        <insert tableName="I_HATE">
+            <column name="HATE">movies</column>
+        </insert>
+        <insert tableName="I_HATE">
+            <column name="HATE">people</column>
+        </insert>
+        <insert tableName="I_HATE">
+            <column name="HATE">coding</column>
+        </insert>
+
+        <createTable tableName="USER_I_HATE">
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_id_pk"/>
+            </column>
+            <column name="I_HATE_ID" type="BIGINT">
+                <constraints nullable="false"  primaryKey="true" primaryKeyName="i_hate_id_pk"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="USER_I_HATE" baseColumnNames="USER_ID"
+                                 constraintName="FK_I_HATE__USER_ID" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="USER_I_HATE" baseColumnNames="I_HATE_ID"
+                                 constraintName="FK_USER_I_HATE__I_LIKE_ID" referencedTableName="I_HATE"
                                  referencedColumnNames="ID"/>
     </changeSet>
 </databaseChangeLog>

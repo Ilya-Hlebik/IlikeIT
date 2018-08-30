@@ -24,5 +24,10 @@ public class UserDto {
     private Set<Sex> sex;
     @EqualsAndHashCode.Exclude
     public Set<StudyDto> studys;
+    @EqualsAndHashCode.Exclude
+    private Set<LangDto> language;
+    @EqualsAndHashCode.Exclude
+    public Set<LikeDto> like;
+    @EqualsAndHashCode.Exclude
+    private Set<HateDto> hate;
 }
-

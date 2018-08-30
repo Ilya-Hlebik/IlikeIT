@@ -1,5 +1,6 @@
 package com.wgdetective.projectstartdemo.dbo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,10 @@ public class StudyDbo {
     @Column(name = "INSTITUTION")
     private String institution;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "USER_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     private UserDbo userDbo;
 }

@@ -11,6 +11,5 @@ import java.util.Set;
 @NoArgsConstructor
 public class StudyDto {
     private String institution;
-    private long userId;
 }
 

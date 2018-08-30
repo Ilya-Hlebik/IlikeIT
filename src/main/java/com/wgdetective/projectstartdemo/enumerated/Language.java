@@ -1,5 +1,5 @@
 package com.wgdetective.projectstartdemo.enumerated;
 
-public enum Hate {
-    books, movies, people, coding
+public enum Language {
+    en,ru,de
 }
