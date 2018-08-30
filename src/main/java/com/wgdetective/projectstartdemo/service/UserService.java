@@ -1,7 +1,6 @@
 package com.wgdetective.projectstartdemo.service;
 
 import com.wgdetective.projectstartdemo.converter.LifePositionConverter;
-import com.wgdetective.projectstartdemo.converter.LikeConverter;
 import com.wgdetective.projectstartdemo.converter.StudyConverter;
 import com.wgdetective.projectstartdemo.converter.UserConverter;
 import com.wgdetective.projectstartdemo.dbo.*;
@@ -11,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +34,6 @@ public class UserService {
         userDbo.setStudys(studyDbos);
         LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePositionDto());
         lIfePositionDbo.setUser(userDbo);
-
         userDbo.setLIfePositionDbo(lIfePositionDbo);
 
         userDbo.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
