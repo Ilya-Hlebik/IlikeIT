@@ -35,7 +35,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="idglebik" id="1.5">
+    <changeSet author="idglebik" id="create table STUDY many to one wit USER">
         <createTable tableName="STUDY">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="study_pk"/>
@@ -47,10 +47,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-    <changeSet author="liquibase-docs" id="1.7">
-         <addForeignKeyConstraint baseTableName="STUDY" baseColumnNames="USER_ID" constraintName="fk_STUDY_USER" referencedTableName="USER"
-                                    referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="STUDY" baseColumnNames="USER_ID" constraintName="fk_STUDY_USER" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
     </changeSet>
     <changeSet author="idglebik" id="1.8">
         <createTable tableName="POSITION">
@@ -219,6 +217,27 @@
                                  referencedColumnNames="ID"/>
         <addForeignKeyConstraint baseTableName="USER_I_HATE" baseColumnNames="I_HATE_ID"
                                  constraintName="FK_USER_I_HATE__I_LIKE_ID" referencedTableName="I_HATE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet author="idglebik" id="create table LIFE_POSITION one to one wit USER">
+        <createTable tableName="LIFE_POSITION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="life_position_pk"/>
+            </column>
+            <column name="ALIGMENT" type="VARCHAR(64)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="MAIN_IN_LIFE" type="VARCHAR(64)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="MAIN_IN_PEOPLE" type="VARCHAR(64)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="LIFE_POSITION" baseColumnNames="USER_ID" constraintName="fk_LIFE_POSITION_USER" referencedTableName="USER"
                                  referencedColumnNames="ID"/>
     </changeSet>
 </databaseChangeLog>

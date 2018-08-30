@@ -1,8 +1,6 @@
 package com.wgdetective.projectstartdemo.dbo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.wgdetective.projectstartdemo.enumerated.Position;
 import com.wgdetective.projectstartdemo.enumerated.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -90,4 +88,12 @@ public class UserDbo {
     @ToString.Exclude
     @JsonBackReference
     private Set<HateDbo> hate;
+
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "user")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonBackReference
+    private LIfePositionDbo lIfePositionDbo;
 }

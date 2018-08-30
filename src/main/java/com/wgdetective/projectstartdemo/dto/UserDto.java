@@ -30,4 +30,6 @@ public class UserDto {
     public Set<LikeDto> like;
     @EqualsAndHashCode.Exclude
     private Set<HateDto> hate;
+    @EqualsAndHashCode.Exclude
+    private LifePositionDto lifePositionDto;
 }
