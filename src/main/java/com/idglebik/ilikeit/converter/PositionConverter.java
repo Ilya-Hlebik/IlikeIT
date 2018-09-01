@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.converter;
 
-import com.idglebik.ilikeit.dto.PositionDto;
 import com.idglebik.ilikeit.dbo.PositionDbo;
+import com.idglebik.ilikeit.dto.PositionDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

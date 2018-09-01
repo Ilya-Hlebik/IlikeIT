@@ -1,6 +1,9 @@
 package com.idglebik.ilikeit.repository;
 
 /*
-public interface UserILikeRepository extends JpaRepository<UserILikeDbo, Long> {
+import com.wgdetective.projectstartdemo.dbo.UserILikeDbo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface  UserILikeRepository extends JpaRepository<UserILikeDbo, Long> {
 }
 */

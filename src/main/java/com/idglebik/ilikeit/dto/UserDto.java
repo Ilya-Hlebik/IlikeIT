@@ -4,6 +4,7 @@ import com.idglebik.ilikeit.enumerated.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -19,9 +20,9 @@ public class UserDto {
     private String generalInfo;
     private String otherInfo;
     @EqualsAndHashCode.Exclude
-    private Set<PositionDto> position;
-    @EqualsAndHashCode.Exclude
     private Set<Sex> sex;
+    @EqualsAndHashCode.Exclude
+    private Set<PositionDto> position;
     @EqualsAndHashCode.Exclude
     public Set<StudyDto> studys;
     @EqualsAndHashCode.Exclude
@@ -31,5 +32,6 @@ public class UserDto {
     @EqualsAndHashCode.Exclude
     private Set<HateDto> hate;
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private LifePositionDto lifePositionDto;
 }

@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.dbo;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Position;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +33,7 @@ public class PositionDbo {
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonIgnore
     private Set<UserDbo> users;
 
 }

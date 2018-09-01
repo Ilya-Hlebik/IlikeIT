@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.dbo;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Aligment;
 import com.idglebik.ilikeit.enumerated.MainInLife;
 import com.idglebik.ilikeit.enumerated.MainInPeople;
@@ -38,6 +38,6 @@ public class LIfePositionDbo {
     @JoinColumn(name = "USER_ID", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonIgnore
     private UserDbo user;
 }
