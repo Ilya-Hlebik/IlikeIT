@@ -1,15 +1,17 @@
-package com.idglebik.ilikeit.service;
+package com.wgdetective.projectstartdemo.service;
 
-import com.idglebik.ilikeit.converter.LifePositionConverter;
-import com.idglebik.ilikeit.converter.StudyConverter;
-import com.idglebik.ilikeit.converter.UserConverter;
-import com.idglebik.ilikeit.dbo.*;
-import com.idglebik.ilikeit.dto.*;
-import com.idglebik.ilikeit.repository.*;
+import com.wgdetective.projectstartdemo.converter.LifePositionConverter;
+import com.wgdetective.projectstartdemo.converter.LikeConverter;
+import com.wgdetective.projectstartdemo.converter.StudyConverter;
+import com.wgdetective.projectstartdemo.converter.UserConverter;
+import com.wgdetective.projectstartdemo.dbo.*;
+import com.wgdetective.projectstartdemo.dto.*;
+import com.wgdetective.projectstartdemo.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +36,9 @@ public class UserService {
         userDbo.setStudys(studyDbos);
         LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePositionDto());
         lIfePositionDbo.setUser(userDbo);
+
         userDbo.setLIfePositionDbo(lIfePositionDbo);
+
         userDbo.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
         userDbo.setLike(userDto.getLike().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
         userDbo.setHate(userDto.getHate().stream().map(this::getHateDBO).collect(Collectors.toSet()));
