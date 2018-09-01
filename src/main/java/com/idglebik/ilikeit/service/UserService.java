@@ -1,8 +1,6 @@
 package com.idglebik.ilikeit.service;
 
-import com.idglebik.ilikeit.converter.LifePositionConverter;
-import com.idglebik.ilikeit.converter.StudyConverter;
-import com.idglebik.ilikeit.converter.UserConverter;
+import com.idglebik.ilikeit.converter.*;
 import com.idglebik.ilikeit.dbo.*;
 import com.idglebik.ilikeit.dto.*;
 import com.idglebik.ilikeit.repository.*;
@@ -25,6 +23,9 @@ public class UserService {
     private final LikeRepository likeRepository;
     private final HateRepository hateRepository;
     private final LifePositionConverter lifePositionConverter;
+    private final HateConverter hateConverter;
+    private final LikeConverter likeConverter;
+    private final PositionConverter positionConverter;
 
     @Transactional
     public void createUser(final UserDto userDto) {
@@ -34,7 +35,9 @@ public class UserService {
         userDbo.setStudys(studyDbos);
         LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePositionDto());
         lIfePositionDbo.setUser(userDbo);
+
         userDbo.setLIfePositionDbo(lIfePositionDbo);
+
         userDbo.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
         userDbo.setLike(userDto.getLike().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
         userDbo.setHate(userDto.getHate().stream().map(this::getHateDBO).collect(Collectors.toSet()));
@@ -52,17 +55,32 @@ public class UserService {
     }
 
     @Transactional
-    private LangDbo getLanguageDBO(LangDto langDto) {
+    public LangDbo getLanguageDBO(LangDto langDto) {
         return languageRepository.findByLanguage(langDto.getLanguage());
     }
 
     public List<UserDto> getUserList() {
-
         return userRepository.findAll().stream().map(userConverter::convertToDto).collect(Collectors.toList());
     }
 
 
     public PositionDbo getPositionDBO(PositionDto positionDto) {
         return positionRepository.findByPositionName(positionDto.getPositionName());
+    }
+
+    public String deleteUser(Long userID) {
+        userRepository.deleteById(userID);
+        return "User was deleted";
+    }
+
+    public UserDto updateUser(Long userID, UserDto userDto) {
+        UserDbo user = userRepository.getOne(userID);
+        user.setAge(userDto.getAge());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setHate(hateConverter.convertToDbo(userDto.getHate()));
+        user.setLanguage(userDto.getLanguage());
+        userRepository.save(user);
+        return userConverter.convertToDto(user);
     }
 }

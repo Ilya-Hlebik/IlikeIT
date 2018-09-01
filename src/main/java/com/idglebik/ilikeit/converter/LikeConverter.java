@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.converter;
 
-import com.idglebik.ilikeit.dto.LikeDto;
 import com.idglebik.ilikeit.dbo.LikeDbo;
+import com.idglebik.ilikeit.dto.LikeDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

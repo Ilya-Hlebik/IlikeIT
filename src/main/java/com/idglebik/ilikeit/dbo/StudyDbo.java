@@ -1,6 +1,6 @@
 package com.idglebik.ilikeit.dbo;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,6 @@ public class StudyDbo {
     @JoinColumn(name = "USER_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonIgnore
     private UserDbo userDbo;
 }

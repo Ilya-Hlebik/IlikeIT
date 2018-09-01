@@ -1,7 +1,5 @@
 package com.idglebik.ilikeit.dbo;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.idglebik.ilikeit.enumerated.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -54,13 +52,11 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "POSITION_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
     private Set<PositionDbo> position;
 
-    @OneToMany(mappedBy = "userDbo", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "userDbo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
     public Set<StudyDbo> studys;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -69,27 +65,7 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "LANGUAGE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
     private Set<LangDbo> language;
-
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "USER_I_HATE",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "I_HATE_ID")})
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonBackReference
-    private Set<HateDbo> hate;
-
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "user")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonBackReference
-    private LIfePositionDbo lIfePositionDbo;
-
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_I_LIKE",
@@ -97,14 +73,19 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "I_LIKE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
     private Set<LikeDbo> like;
 
-/*    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "USER_I_HATE",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "I_HATE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
-    private Set<UserILikeDbo> userILikeDbo;*/
+    private Set<HateDbo> hate;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private LIfePositionDbo lIfePositionDbo;
 }

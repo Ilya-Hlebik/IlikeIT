@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.dbo;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Like;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,13 +33,7 @@ public class LikeDbo {
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
+    @JsonIgnore
     private Set<UserDbo> users;
-
-/*    @OneToMany(mappedBy = "like", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonManagedReference
-    private Set<UserILikeDbo> userILikeDbo;*/
 
 }

@@ -1,39 +1,32 @@
 package com.idglebik.ilikeit.dbo;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
-import java.io.Serializable;
-
-/*@Data
-@NoArgsConstructor
-@Entity
-@Table(name = "USER_I_LIKE")*/
-public class UserILikeDbo {
 /*
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
+@Data
+@NoArgsConstructor
+@Entity(name = "UserILikeDboEntity")
+@Table(name = "USER_I_LIKE")
+public class UserILikeDbo {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private UserDbo user;
+    @EmbeddedId
+    private UserLikeId userLikeId;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "I_LIKE_ID", referencedColumnName = "ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private LikeDbo like;
-
+    @NotNull
     @Column(name = "REASON")
     private String reason;
-*/
 
+    public UserILikeDbo(UserDbo userDbo, LikeDbo likeDbo, UserDto userDto) {
+        userLikeId = new UserILikeDbo.UserLikeId();
+        userLikeId.iLikeId = likeDbo.getId();
+        userLikeId.userId = userDbo.getId();
+        reason = userDto.getReason();
+    }
+
+    @Embeddable
+    @EqualsAndHashCode
+    private static class UserLikeId {
+        public long iLikeId;
+        public long userId;
+    }
 }
+*/
