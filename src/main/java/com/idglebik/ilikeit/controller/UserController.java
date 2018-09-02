@@ -18,13 +18,11 @@ public class UserController {
 
     private final UserService userService;
 
-
     @ApiOperation("create user")
     @PostMapping("/create")
     @ResponseBody
-    public String createUser(@RequestBody final UserDto userDto) {
-        userService.createUser(userDto);
-        return "User created";
+    public UserDto createUser(@RequestBody final UserDto userDto) {
+        return userService.createUser(userDto);
     }
 
     @ApiOperation("show list of users")
@@ -32,6 +30,13 @@ public class UserController {
     @ResponseBody
     public List<UserDto> getAllPersons() {
         return userService.getUserList();
+    }
+
+    @ApiOperation("show one user")
+    @GetMapping("/getOne")
+    @ResponseBody
+    public UserDto getUser(@RequestParam Long userId) {
+        return userService.getUser(userId);
     }
 
     @ApiOperation("delete user")

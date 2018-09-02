@@ -4,7 +4,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet author="idglebik" id="1">
+    <changeSet author="idglebik" id="create table USER">
         <createTable tableName="USER">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_pk"/>
@@ -50,13 +50,13 @@
         <addForeignKeyConstraint baseTableName="STUDY" baseColumnNames="USER_ID" constraintName="fk_STUDY_USER" referencedTableName="USER"
                                  referencedColumnNames="ID"/>
     </changeSet>
-    <changeSet author="idglebik" id="1.8">
+    <changeSet author="idglebik" id="create table Position many to many with USER">
         <createTable tableName="POSITION">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="position_pk"/>
             </column>
             <column name="POSITION_NAME"
-                    type="ENUM('worker', 'developer', 'support', 'businessAnalyst', 'tester', 'manager')">
+                    type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -70,7 +70,6 @@
             <column name="POSITION_NAME">support</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">developer</column>
             <column name="POSITION_NAME">businessAnalyst</column>
         </insert>
         <insert tableName="POSITION">
@@ -95,26 +94,26 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-    <changeSet author="idglebik" id="1.9">
+    <changeSet author="idglebik" id="create table SEX one to many with USER">
         <createTable tableName="USER_SEX">
             <column name="USER_ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="USER_ID_pk"/>
             </column>
             <column name="SEX"
-                    type="ENUM('male', 'female')">
+                    type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="USER_SEX" baseColumnNames="USER_ID" constraintName="FK_USER_ID_USER_ID" referencedTableName="USER"
                                  referencedColumnNames="ID"/>
     </changeSet>
-    <changeSet id="create table language, many to many with user" author="idglebik">
+    <changeSet id="create table LANGUAGE, many to many with USER" author="idglebik">
         <createTable tableName="LANGUAGE">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="lang_pk"/>
             </column>
             <column name="LANG"
-                    type="ENUM('en', 'ru', 'de')">
+                    type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -143,13 +142,13 @@
                                  constraintName="FK_USER_LANGUAGE__LANGUAGE_ID" referencedTableName="LANGUAGE"
                                  referencedColumnNames="ID"/>
     </changeSet>
-    <changeSet id="create table I_LIKE, many to many with user" author="idglebik">
+    <changeSet id="create table I_LIKE, many to many with USER" author="idglebik">
         <createTable tableName="I_LIKE">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="i_like_pk"/>
             </column>
             <column name="LIKE"
-                    type="ENUM('books', 'movies', 'people', 'coding')">
+                    type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -181,13 +180,13 @@
                                  constraintName="FK_USER_I_LIKE__I_LIKE_ID" referencedTableName="I_LIKE"
                                  referencedColumnNames="ID"/>
     </changeSet>
-    <changeSet id="create table I_HATE, many to many with user" author="idglebik">
+    <changeSet id="create table I_HATE, many to many with USER" author="idglebik">
         <createTable tableName="I_HATE">
             <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="i_hate_pk"/>
             </column>
             <column name="HATE"
-                    type="ENUM('books', 'movies', 'people', 'coding')">
+                    type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

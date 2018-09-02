@@ -38,7 +38,7 @@ public class SwaggerConfig {
 
     private ApiInfo metadata() {
         return new ApiInfoBuilder()
-                .title("StartProjectDemo")
+                .title("I like it!!!")
                 .description("Api")
                 .version("1.0")
                 .build();
