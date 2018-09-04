@@ -5,6 +5,9 @@ import com.idglebik.ilikeit.dto.LifePositionDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class LifePositionConverter implements DtoConverter<LifePositionDto, LIfePositionDbo>{
     @Override

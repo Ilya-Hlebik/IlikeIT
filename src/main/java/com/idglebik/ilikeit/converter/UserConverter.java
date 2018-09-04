@@ -16,8 +16,7 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     public UserDto convertToDto(final UserDbo dbo) {
         final UserDto userDto = new UserDto();
         BeanUtils.copyProperties(dbo,userDto);
-        userDto.setLifePositionDto(lifePositionConverter.convertToDto(dbo.getLIfePositionDbo()));
-
+        userDto.setLifePosition(lifePositionConverter.convertToDto(dbo.getLIfePosition()));
         return userDto;
     }
 

@@ -20,6 +20,7 @@ public class LikeDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private long id;
 
     @NotNull

@@ -87,5 +87,5 @@ public class UserDbo {
             fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private LIfePositionDbo lIfePositionDbo;
+    private LIfePositionDbo lIfePosition;
 }

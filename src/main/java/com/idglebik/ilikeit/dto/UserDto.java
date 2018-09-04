@@ -33,5 +33,5 @@ public class UserDto {
     private Set<HateDto> hate;
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private LifePositionDto lifePositionDto;
+    private LifePositionDto lifePosition;
 }

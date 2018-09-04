@@ -17,7 +17,9 @@ public class StudyDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private long id;
+
     @Column(name = "INSTITUTION")
     private String institution;
 

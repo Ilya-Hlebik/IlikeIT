@@ -20,6 +20,7 @@ public class LIfePositionDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private long id;
 
     @Enumerated(EnumType.STRING)

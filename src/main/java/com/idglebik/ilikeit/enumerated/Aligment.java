@@ -1,5 +1,5 @@
 package com.idglebik.ilikeit.enumerated;
 
 public enum Aligment {
-    catolic, muslim
+    catolic, muslim, orthodox, jew
 }

@@ -1,2 +1,2 @@
-# projectstartdemo
-http://localhost:8090/projectstartdemo/rest/swagger-ui.html - SWAGGER PAGE
+# I like it!!
+http://localhost:8080/ilikeit/rest/swagger-ui.html - SWAGGER PAGE
