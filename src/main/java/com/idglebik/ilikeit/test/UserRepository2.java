@@ -1,10 +1,9 @@
 package com.idglebik.ilikeit.test;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository2 extends JpaRepository<User, Integer> {
 
     boolean existsByUsername(String username);
 
@@ -12,5 +11,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     void deleteByUsername(String username);
-
 }

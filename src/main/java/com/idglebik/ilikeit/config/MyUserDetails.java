@@ -1,7 +1,7 @@
 package com.idglebik.ilikeit.config;
 
 import com.idglebik.ilikeit.test.User;
-import com.idglebik.ilikeit.test.UserRepository;
+import com.idglebik.ilikeit.test.UserRepository2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class MyUserDetails implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository2 userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

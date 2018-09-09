@@ -1,7 +1,5 @@
 package com.idglebik.ilikeit.test;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,11 +18,17 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(tags = "users")
+
 @RestController
 @RequestMapping("/users")
-public class UserControllers {
+@Api(tags = "users")
+public class UserController {
 
+    @Autowired
+    private UserServiceTest userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")
@@ -83,4 +87,5 @@ public class UserControllers {
     public UserResponseDTO whoami(HttpServletRequest req) {
         return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
     }
+
 }

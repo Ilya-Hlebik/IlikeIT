@@ -9,7 +9,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.idglebik.ilikeit.test.CustomException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -33,9 +32,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 Authentication auth = token != null ? jwtTokenProvider.getAuthentication(token) : null;
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        } catch (CustomException ex) {
-            HttpServletResponse response = (HttpServletResponse) res;
-            response.sendError(ex.getHttpStatus().value(), ex.getMessage());
+        } catch (Exception ex) {
             return;
         }
 
