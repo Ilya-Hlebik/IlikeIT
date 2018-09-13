@@ -40,11 +40,12 @@ public class UserDbo {
     @Column(name = "OTHER_INFO")
     private String otherInfo;
     @NotNull
+    @Column(name = "SEX")
     @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_SEX", joinColumns = @JoinColumn(name = "USER_ID"))
     @Enumerated(EnumType.STRING)
     @EqualsAndHashCode.Exclude
-    private Set<Sex> sex;
+    private Set<Sex> sexes;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_POSITION",
@@ -52,12 +53,12 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "POSITION_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<PositionDbo> position;
+    private Set<PositionDbo> positions;
 
     @OneToMany(mappedBy = "userDbo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    public Set<StudyDbo> studys;
+    public Set<StudyDbo> studies;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_LANGUAGE",
@@ -65,7 +66,7 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "LANGUAGE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<LangDbo> language;
+    private Set<LangDbo> languages;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_I_LIKE",
@@ -73,7 +74,7 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "I_LIKE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<LikeDbo> like;
+    private Set<LikeDbo> likes;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_I_HATE",
@@ -81,7 +82,7 @@ public class UserDbo {
             inverseJoinColumns = {@JoinColumn(name = "I_HATE_ID")})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<HateDbo> hate;
+    private Set<HateDbo> hates;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)

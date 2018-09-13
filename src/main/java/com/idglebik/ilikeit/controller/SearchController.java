@@ -21,21 +21,21 @@ import java.util.List;
 public class SearchController {
     private final SearchService searchService;
 
-    @ApiOperation("find user by position")
+    @ApiOperation("find user by positions")
     @GetMapping("/find/usingPosition")
     @ResponseBody
     public List<UserDto> findUserByPosition(@RequestParam Position position) {
         return searchService.searchUsersByPosition(position);
     }
 
-    @ApiOperation("find user by hate")
+    @ApiOperation("find user by hates")
     @GetMapping("/find/usingHate")
     @ResponseBody
     public List<UserDto> findUserByHate(@RequestParam Hate hate) {
         return searchService.searchUsersByHate(hate);
     }
 
-    @ApiOperation("find user by like")
+    @ApiOperation("find user by likes")
     @GetMapping("/find/usingLike")
     @ResponseBody
     public List<UserDto> findUserByLike(@RequestParam Like like) {

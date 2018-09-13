@@ -30,18 +30,18 @@ public class UserService {
     @Transactional
     public UserDto createUser(final UserDto userDto) {
         final UserDbo userDbo = userConverter.convertToDbo(userDto);
-        Set<StudyDbo> studyDbos = userDto.getStudys().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
+        Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
         studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(userDbo));
-        userDbo.setStudys(studyDbos);
+        userDbo.setStudies(studyDbos);
         LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
         lIfePositionDbo.setUser(userDbo);
 
         userDbo.setLIfePosition(lIfePositionDbo);
 
-        userDbo.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
-        userDbo.setLike(userDto.getLike().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
-        userDbo.setHate(userDto.getHate().stream().map(this::getHateDBO).collect(Collectors.toSet()));
-        userDbo.setLanguage(userDto.getLanguage().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
+        userDbo.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
+        userDbo.setLikes(userDto.getLikes().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
+        userDbo.setHates(userDto.getHates().stream().map(this::getHateDBO).collect(Collectors.toSet()));
+        userDbo.setLanguages(userDto.getLanguages().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
         return userConverter.convertToDto(userRepository.save(userDbo));
     }
 
@@ -55,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public LangDbo getLanguageDBO(LangDto langDto) {
+    private LangDbo getLanguageDBO(LangDto langDto) {
         return languageRepository.findByLanguage(langDto.getLanguage());
     }
 
@@ -76,6 +76,7 @@ public class UserService {
     @Transactional
     public UserDto updateUser(Long userID, UserDto userDto) {
         UserDbo user = userRepository.getOne(userID);
+        user.setSexes(userDto.getSexes());
         user.setAge(userDto.getAge());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -84,19 +85,19 @@ public class UserService {
         user.setCountry(userDto.getCountry());
         user.setGeneralInfo(userDto.getGeneralInfo());
         user.setOtherInfo(userDto.getOtherInfo());
-        user.setLike(userDto.getLike().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
-        user.setHate(userDto.getHate().stream().map(this::getHateDBO).collect(Collectors.toSet()));
-        user.setLanguage(userDto.getLanguage().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
-        user.setPosition(userDto.getPosition().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
+        user.setLikes(userDto.getLikes().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
+        user.setHates(userDto.getHates().stream().map(this::getHateDBO).collect(Collectors.toSet()));
+        user.setLanguages(userDto.getLanguages().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
+        user.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
 
         lifePositionRepository.removeByUser(user);
         LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
         lIfePositionDbo.setUser(user);
         user.setLIfePosition(lIfePositionDbo);
 
-        Set<StudyDbo> studyDbos = userDto.getStudys().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
+        Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
         studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(user));
-        user.setStudys(studyDbos);
+        user.setStudies(studyDbos);
 
         return userConverter.convertToDto(userRepository.save(user));
     }

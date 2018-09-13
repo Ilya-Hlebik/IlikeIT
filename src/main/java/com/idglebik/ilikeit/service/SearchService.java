@@ -25,19 +25,19 @@ public class SearchService {
 
 
     public List<UserDto> searchUsersByPosition(Position position) {
-        return userConverter.convertToDto(userRepository.findByPosition(positionRepository.findByPositionName(position)));
+        return userConverter.convertToDto(userRepository.findByPositions(positionRepository.findByPositionName(position)));
     }
 
     public List<UserDto> searchUsersByHate(Hate hate) {
-        return userConverter.convertToDto(userRepository.findByHate(hateRepository.findByHate(hate)));
+        return userConverter.convertToDto(userRepository.findByHates(hateRepository.findByHate(hate)));
     }
 
     public List<UserDto> searchUsersByLike(Like like) {
-        return userConverter.convertToDto(userRepository.findByLike(likeRepository.findByLike(like)));
+        return userConverter.convertToDto(userRepository.findByLikes(likeRepository.findByLike(like)));
     }
 
     public List<UserDto> searchUsersByLang(Language language) {
-        return userConverter.convertToDto(userRepository.findByLanguage(languageRepository.findByLanguage(language)));
+        return userConverter.convertToDto(userRepository.findByLanguages(languageRepository.findByLanguage(language)));
     }
 
     public List<UserDto> searchUsersByLifePosition(LifePositionDto lifePositionDto) {
@@ -46,7 +46,7 @@ public class SearchService {
     }
 
     public List<UserDto> searchUsersByLikeAndHate(Like like, Hate hate) {
-        return userConverter.convertToDto(userRepository.findByLikeAndHate(likeRepository.findByLike(like), hateRepository.findByHate(hate)));
+        return userConverter.convertToDto(userRepository.findByLikesAndHates(likeRepository.findByLike(like), hateRepository.findByHate(hate)));
     }
 
     public List<UserDto> searchUsersByLastNameAndCityAndCountry(String lastName, String city, String country) {

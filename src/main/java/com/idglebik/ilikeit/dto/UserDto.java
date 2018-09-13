@@ -20,17 +20,17 @@ public class UserDto {
     private String generalInfo;
     private String otherInfo;
     @EqualsAndHashCode.Exclude
-    private Set<Sex> sex;
+    private Set<Sex> sexes;
     @EqualsAndHashCode.Exclude
-    private Set<PositionDto> position;
+    private Set<PositionDto> positions;
     @EqualsAndHashCode.Exclude
-    public Set<StudyDto> studys;
+    public Set<StudyDto> studies;
     @EqualsAndHashCode.Exclude
-    private Set<LangDto> language;
+    private Set<LangDto> languages;
     @EqualsAndHashCode.Exclude
-    public Set<LikeDto> like;
+    public Set<LikeDto> likes;
     @EqualsAndHashCode.Exclude
-    private Set<HateDto> hate;
+    private Set<HateDto> hates;
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private LifePositionDto lifePosition;
