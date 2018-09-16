@@ -1,5 +1,6 @@
 package com.idglebik.ilikeit.dbo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -89,4 +90,11 @@ public class UserDbo {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private LIfePositionDbo lIfePosition;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "LOGIN_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
+    private LoginDbo loginDbo;
 }

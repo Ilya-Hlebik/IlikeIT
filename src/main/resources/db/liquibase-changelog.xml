@@ -239,4 +239,26 @@
         <addForeignKeyConstraint baseTableName="LIFE_POSITION" baseColumnNames="USER_ID" constraintName="fk_LIFE_POSITION_USER" referencedTableName="USER"
                                  referencedColumnNames="ID"/>
     </changeSet>
+    <changeSet author="idglebik" id="create table LOGIN">
+        <createTable tableName="LOGIN">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="login_pk"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="idglebik" id="create fk from LOGIN to USER">
+        <addColumn tableName="USER">
+            <column name="LOGIN_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="USER" baseColumnNames="LOGIN_ID" constraintName="fk_USER_LOGIN" referencedTableName="LOGIN"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
 </databaseChangeLog>

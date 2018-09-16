@@ -20,4 +20,8 @@ public interface UserRepository extends JpaRepository<UserDbo, Long> {
     List<UserDbo> findByLikesAndHates (LikeDbo like, HateDbo hate);
 
     List<UserDbo> findAllByLastNameAndCityAndCountry(String lastName, String city, String country);
+
+    List<UserDbo> findByLoginDbo(LoginDbo loginDbo);
+
+    void deleteByLoginDbo(LoginDbo loginDbo);
 }

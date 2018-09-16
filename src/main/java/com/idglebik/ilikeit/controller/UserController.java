@@ -1,13 +1,16 @@
 package com.idglebik.ilikeit.controller;
 
-import com.idglebik.ilikeit.dbo.UserDbo;
+import com.idglebik.ilikeit.config.Response;
 import com.idglebik.ilikeit.dto.UserDto;
 import com.idglebik.ilikeit.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api("RestController")
@@ -19,38 +22,37 @@ public class UserController {
     private final UserService userService;
 
     @ApiOperation("create user")
-    @PostMapping("/create")
+    @PostMapping
     @ResponseBody
-    public UserDto createUser(@RequestBody final UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<Response<UserDto>> createUser(@RequestBody @Valid final UserDto userDto, Authentication auth) {
+        return userService.createUser(userDto, auth);
     }
 
     @ApiOperation("show list of users")
-    @GetMapping("/list")
+    @GetMapping
     @ResponseBody
-    public List<UserDto> getAllPersons() {
+    public ResponseEntity<Response<List<UserDto>>> getAllPersons() {
         return userService.getUserList();
     }
 
-    @ApiOperation("show one user")
-    @GetMapping("/getOne")
+    @ApiOperation("show current users")
+    @GetMapping("/me")
     @ResponseBody
-    public UserDto getUser(@RequestParam Long userId) {
-        return userService.getUser(userId);
+    public ResponseEntity<Response<List<UserDto>>> getUser(Authentication auth) {
+        return userService.getCurrentUser(auth);
     }
 
     @ApiOperation("delete user")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @ResponseBody
-    public String deleteUser( @RequestParam Long userID) {
-       return   userService.deleteUser(userID);
-
+    public ResponseEntity<Response<String>> deleteUser(Authentication auth) {
+        return userService.deleteUser(auth);
     }
 
     @ApiOperation("update user")
     @PutMapping("/update")
     @ResponseBody
-    public UserDto updateUSer(@RequestParam Long userID, @RequestBody UserDto userDto) {
-        return   userService.updateUser(userID, userDto);
+    public ResponseEntity<Response<UserDto>> updateUSer(Authentication auth, @RequestBody UserDto userDto) {
+        return userService.updateUser(auth, userDto);
     }
 }

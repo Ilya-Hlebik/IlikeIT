@@ -5,14 +5,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class UserDto {
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @Positive
     private int age;
     private String city;
     private String country;
