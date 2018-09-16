@@ -261,4 +261,14 @@
         <addForeignKeyConstraint baseTableName="USER" baseColumnNames="LOGIN_ID" constraintName="fk_USER_LOGIN" referencedTableName="LOGIN"
                                  referencedColumnNames="ID"/>
     </changeSet>
+    <changeSet author="idglebik" id="create ROLES many to one with LOGIN">
+        <createTable tableName="LOGIN_ROLE">
+        <column name="LOGIN_ID" type="BIGINT">
+            <constraints nullable="false" primaryKeyName="login_pk"/>
+        </column>
+        <column name="ROLES" type="VARCHAR(64)"/>
+    </createTable>
+        <addForeignKeyConstraint baseTableName="LOGIN_ROLE" baseColumnNames="LOGIN_ID" constraintName="fk_LOGIN_ROLE_LOGIN" referencedTableName="LOGIN"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
 </databaseChangeLog>

@@ -48,9 +48,15 @@ public class UserController {
     public ResponseEntity<Response<String>> deleteUser(Authentication auth) {
         return userService.deleteUser(auth);
     }
+    @ApiOperation("delete user by id")
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Response<String>> deleteUserById(@PathVariable Long id, Authentication auth) {
+        return userService.deleteUserById(id,auth);
+    }
 
     @ApiOperation("update user")
-    @PutMapping("/update")
+    @PutMapping
     @ResponseBody
     public ResponseEntity<Response<UserDto>> updateUSer(Authentication auth, @RequestBody UserDto userDto) {
         return userService.updateUser(auth, userDto);

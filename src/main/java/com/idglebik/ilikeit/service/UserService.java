@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class UserService {
             }
         }
         log.error("You can't save 2 users for 1 login");
-        return new ResponseEntity(Response.error("You already have an account"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(Response.error("You already have an account"), HttpStatus.FORBIDDEN);
 
     }
 
@@ -139,5 +140,18 @@ public class UserService {
     public ResponseEntity<Response<List<UserDto>>> getCurrentUser(Authentication authentication) {
         final LoginDbo login = loginRepository.findByUsername(authentication.getName());
         return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.findByLoginDbo(login))));
+    }
+
+    @Transactional
+    public ResponseEntity<Response<String>> deleteUserById(Long id, Authentication auth) {
+        if (loginService.isUserHavePermission(auth)) {
+            final Optional<UserDbo> userDbo = userRepository.findById(id);
+            if (userDbo.isPresent()) {
+                userRepository.deleteById(id);
+                return ResponseEntity.ok(Response.success("User with id: " + id + " was deleted"));
+            }
+            return new ResponseEntity(Response.error("User with id: " + id + " doesn't exist"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(Response.error("You do not have permission to perform this operation"), HttpStatus.FORBIDDEN);
     }
 }

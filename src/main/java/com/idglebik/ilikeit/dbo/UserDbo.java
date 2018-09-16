@@ -91,7 +91,7 @@ public class UserDbo {
     @ToString.Exclude
     private LIfePositionDbo lIfePosition;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "LOGIN_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
