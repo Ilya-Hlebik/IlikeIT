@@ -2,6 +2,7 @@ package com.idglebik.ilikeit.controller;
 
 import com.idglebik.ilikeit.config.Response;
 import com.idglebik.ilikeit.dto.UserDto;
+import com.idglebik.ilikeit.exception.CantCreateUserException;
 import com.idglebik.ilikeit.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,7 @@ public class UserController {
     @ApiOperation("create user")
     @PostMapping
     @ResponseBody
-    public ResponseEntity<Response<UserDto>> createUser(@RequestBody @Valid final UserDto userDto, Authentication auth) {
+    public ResponseEntity<Response<UserDto>> createUser(@RequestBody @Valid final UserDto userDto, Authentication auth) throws CantCreateUserException {
         return userService.createUser(userDto, auth);
     }
 

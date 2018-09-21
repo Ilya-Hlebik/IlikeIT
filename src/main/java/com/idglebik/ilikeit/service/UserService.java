@@ -6,6 +6,7 @@ import com.idglebik.ilikeit.converter.StudyConverter;
 import com.idglebik.ilikeit.converter.UserConverter;
 import com.idglebik.ilikeit.dbo.*;
 import com.idglebik.ilikeit.dto.*;
+import com.idglebik.ilikeit.exception.CantCreateUserException;
 import com.idglebik.ilikeit.repository.*;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 
 @Service
@@ -39,11 +43,10 @@ public class UserService {
     private static Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
-    public ResponseEntity<Response<UserDto>> createUser(final UserDto userDto, final Authentication auth) {
+    public ResponseEntity<Response<UserDto>> createUser(final UserDto userDto, final Authentication auth) throws CantCreateUserException {
         if (loginService.isCanCreateAccount(auth)) {
-            final UserDbo userDbo;
             try {
-                userDbo = userConverter.convertToDbo(userDto);
+                final UserDbo userDbo = userConverter.convertToDbo(userDto);
                 final Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
                 studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(userDbo));
                 userDbo.setStudies(studyDbos);
@@ -57,13 +60,10 @@ public class UserService {
                 userDbo.setLoginDbo(loginRepository.findByUsername(auth.getName()));
                 return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.save(userDbo))));
             } catch (Exception e) {
-                log.error("failed during creating user", e);
-                return new ResponseEntity(Response.error("Can't save, please check information in the fields"), HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new CantCreateUserException("Can't save, please check information in the fields");
             }
         }
-        log.error("You can't save 2 users for 1 login");
         return new ResponseEntity(Response.error("You already have an account"), HttpStatus.FORBIDDEN);
-
     }
 
     private HateDbo getHateDBO(final HateDto hateDto) {
