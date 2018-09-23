@@ -271,4 +271,45 @@
         <addForeignKeyConstraint baseTableName="LOGIN_ROLE" baseColumnNames="LOGIN_ID" constraintName="fk_LOGIN_ROLE_LOGIN" referencedTableName="LOGIN"
                                  referencedColumnNames="ID"/>
     </changeSet>
+
+    <changeSet author="idglebik" id="create table FRIEND many to one wit USER">
+        <createTable tableName="FRIEND">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="friend_pk"/>
+            </column>
+            <column name="FRIEND_ID" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="FRIEND" baseColumnNames="USER_ID" constraintName="fk_FRIEND_USER" referencedTableName="USER"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet author="idglebik" id="create table MESSAGE">
+        <createTable tableName="MESSAGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="message_pk"/>
+            </column>
+            <column name="CONTENT" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="SENDER" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECIPIENT" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HISTORY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+     </changeSet>
+    <changeSet id="idglebik" author="change column type for MESSAGE">
+        <modifyDataType tableName="MESSAGE" columnName="HISTORY_ID" newDataType="VARCHAR(64)"/>
+    </changeSet>
 </databaseChangeLog>

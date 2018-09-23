@@ -97,4 +97,9 @@ public class UserDbo {
     @ToString.Exclude
     @JsonIgnore
     private LoginDbo loginDbo;
+
+    @OneToMany(mappedBy = "userDbo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    public Set<FriendDbo> friendDbos;
 }

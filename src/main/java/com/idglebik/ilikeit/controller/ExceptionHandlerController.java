@@ -1,5 +1,8 @@
-package com.idglebik.ilikeit.exception;
+package com.idglebik.ilikeit.controller;
 
+import com.idglebik.ilikeit.exception.CantRemoveUserException;
+import com.idglebik.ilikeit.exception.CantSaveUserException;
+import com.idglebik.ilikeit.exception.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +18,7 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 @ControllerAdvice
 @RestController
-public class CustomizedResponseEntityExceptionHandler {
+public class ExceptionHandlerController {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
@@ -24,11 +27,11 @@ public class CustomizedResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CantCreateUserException.class)
-    public final ResponseEntity<ExceptionResponse> handleUserBadRequestException(CantCreateUserException ex, WebRequest request) {
+    @ExceptionHandler({CantSaveUserException.class, CantRemoveUserException.class})
+    public final ResponseEntity<ExceptionResponse> handleUserBadRequestException(CantSaveUserException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
-        LOGGER.log(Level.SEVERE, ex.getMessage());
+        LOGGER.log(Level.WARNING,"Error", exceptionResponse);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

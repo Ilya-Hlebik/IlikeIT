@@ -4,7 +4,6 @@ import com.idglebik.ilikeit.config.BCryptPasswordEncoderImpl;
 import com.idglebik.ilikeit.config.Response;
 import com.idglebik.ilikeit.converter.LoginConverter;
 import com.idglebik.ilikeit.dbo.LoginDbo;
-import com.idglebik.ilikeit.dbo.UserDbo;
 import com.idglebik.ilikeit.dto.LoginDto;
 import com.idglebik.ilikeit.enumerated.Role;
 import com.idglebik.ilikeit.repository.LoginRepository;
@@ -16,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 
 @Service
 @AllArgsConstructor

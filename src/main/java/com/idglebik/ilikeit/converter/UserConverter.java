@@ -12,11 +12,15 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     @Autowired
     LifePositionConverter lifePositionConverter;
 
+    @Autowired
+    FriendConverter friendConverter;
+
     @Override
     public UserDto convertToDto(final UserDbo dbo) {
         final UserDto userDto = new UserDto();
         BeanUtils.copyProperties(dbo,userDto);
         userDto.setLifePosition(lifePositionConverter.convertToDto(dbo.getLIfePosition()));
+        userDto.setFriendDtos(friendConverter.convertToDto(dbo.getFriendDbos()));
         return userDto;
     }
 

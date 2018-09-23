@@ -1,7 +1,10 @@
 package com.idglebik.ilikeit.service;
 
+import com.idglebik.ilikeit.config.Response;
 import com.idglebik.ilikeit.converter.UserConverter;
+import com.idglebik.ilikeit.dbo.*;
 import com.idglebik.ilikeit.dto.LifePositionDto;
+import com.idglebik.ilikeit.dto.SearchDto;
 import com.idglebik.ilikeit.dto.UserDto;
 import com.idglebik.ilikeit.enumerated.Hate;
 import com.idglebik.ilikeit.enumerated.Language;
@@ -9,9 +12,12 @@ import com.idglebik.ilikeit.enumerated.Like;
 import com.idglebik.ilikeit.enumerated.Position;
 import com.idglebik.ilikeit.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,33 +29,59 @@ public class SearchService {
     private final LikeRepository likeRepository;
     private final LanguageRepository languageRepository;
 
-
-    public List<UserDto> searchUsersByPosition(Position position) {
-        return userConverter.convertToDto(userRepository.findByPositions(positionRepository.findByPositionName(position)));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByPosition(final Position position) {
+        final PositionDbo positionDbo = positionRepository.findByPositionName(position);
+        final List<UserDbo> userDbos = userRepository.findByPositions(positionDbo);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByHate(Hate hate) {
-        return userConverter.convertToDto(userRepository.findByHates(hateRepository.findByHate(hate)));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByHate(final Hate hate) {
+        final HateDbo hateDbo = hateRepository.findByHate(hate);
+        final List<UserDbo> userDbos = userRepository.findByHates(hateDbo);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByLike(Like like) {
-        return userConverter.convertToDto(userRepository.findByLikes(likeRepository.findByLike(like)));
+
+
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByLike(final Like like) {
+        final LikeDbo likeDbo = likeRepository.findByLike(like);
+        final List<UserDbo> userDbos = userRepository.findByLikes(likeDbo);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByLang(Language language) {
-        return userConverter.convertToDto(userRepository.findByLanguages(languageRepository.findByLanguage(language)));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByLang(final Language language) {
+        final LangDbo langDbo = languageRepository.findByLanguage(language);
+        final List<UserDbo> userDbos = userRepository.findByLanguages(langDbo);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByLifePosition(LifePositionDto lifePositionDto) {
-        return userConverter.convertToDto(userRepository.findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople(
-                lifePositionDto.getAligment(), lifePositionDto.getMainInLife(), lifePositionDto.getMainInPeople()));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByLifePosition(final LifePositionDto lifePositionDto) {
+        final List<UserDbo> userDbos = userRepository.findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople(
+                lifePositionDto.getAligment(), lifePositionDto.getMainInLife(), lifePositionDto.getMainInPeople());
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByLikeAndHate(Like like, Hate hate) {
-        return userConverter.convertToDto(userRepository.findByLikesAndHates(likeRepository.findByLike(like), hateRepository.findByHate(hate)));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByLikeAndHate(final Like like, final Hate hate) {
+        final HateDbo hateDbo = hateRepository.findByHate(hate);
+        final LikeDbo likeDbo = likeRepository.findByLike(like);
+        final List<UserDbo> userDbos = userRepository.findByLikesAndHates(likeDbo, hateDbo);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public List<UserDto> searchUsersByLastNameAndCityAndCountry(String lastName, String city, String country) {
-        return userConverter.convertToDto(userRepository.findAllByLastNameAndCityAndCountry(lastName, city, country));
+    public ResponseEntity<Response<List<SearchDto>>> searchUsersByLastNameAndCityAndCountry(final String lastName, final String city, final String country) {
+        final List<UserDbo> userDbos = userRepository.findAllByLastNameAndCityAndCountry(lastName, city, country);
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
+    }
+
+    public ResponseEntity<Response<List<UserDto>>> findByUserDto(UserDto userDto) {
+        return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.findAllByFirstNameAndLastName(userDto.getFirstName(),userDto.getLastName()))));
+    }
+
+    public SearchDto setSearchDtos(UserDbo userDbo) {
+        return new SearchDto(userConverter.convertToDto(userDbo), userDbo.getId());
+    }
+
+    public List<SearchDto> getSearchDtos(List<UserDbo> userDbos) {
+        return userDbos.stream().map(this::setSearchDtos).collect(Collectors.toList());
     }
 }

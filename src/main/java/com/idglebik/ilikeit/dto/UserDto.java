@@ -40,4 +40,6 @@ public class UserDto {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private LifePositionDto lifePosition;
+    @EqualsAndHashCode.Exclude
+    public Set<FriendDto> friendDtos;
 }

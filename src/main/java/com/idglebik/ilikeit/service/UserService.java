@@ -1,16 +1,16 @@
 package com.idglebik.ilikeit.service;
 
 import com.idglebik.ilikeit.config.Response;
+import com.idglebik.ilikeit.converter.FriendConverter;
 import com.idglebik.ilikeit.converter.LifePositionConverter;
 import com.idglebik.ilikeit.converter.StudyConverter;
 import com.idglebik.ilikeit.converter.UserConverter;
 import com.idglebik.ilikeit.dbo.*;
 import com.idglebik.ilikeit.dto.*;
-import com.idglebik.ilikeit.exception.CantCreateUserException;
+import com.idglebik.ilikeit.exception.CantRemoveUserException;
+import com.idglebik.ilikeit.exception.CantSaveUserException;
 import com.idglebik.ilikeit.repository.*;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,10 +20,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 
 @Service
@@ -40,10 +37,11 @@ public class UserService {
     private final LifePositionRepository lifePositionRepository;
     private final LoginRepository loginRepository;
     private final LoginService loginService;
-    private static Logger log = LoggerFactory.getLogger(UserService.class);
+    private final SearchService searchService;
+    private final FriendRepository friendRepository;
 
     @Transactional
-    public ResponseEntity<Response<UserDto>> createUser(final UserDto userDto, final Authentication auth) throws CantCreateUserException {
+    public ResponseEntity<Response<UserDto>> createUser(final UserDto userDto, final Authentication auth) throws CantSaveUserException {
         if (loginService.isCanCreateAccount(auth)) {
             try {
                 final UserDbo userDbo = userConverter.convertToDbo(userDto);
@@ -60,7 +58,7 @@ public class UserService {
                 userDbo.setLoginDbo(loginRepository.findByUsername(auth.getName()));
                 return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.save(userDbo))));
             } catch (Exception e) {
-                throw new CantCreateUserException("Can't save, please check information in the fields");
+                throw new CantSaveUserException("Can't save, please check information in the fields");
             }
         }
         return new ResponseEntity(Response.error("You already have an account"), HttpStatus.FORBIDDEN);
@@ -81,7 +79,11 @@ public class UserService {
     }
 
     public ResponseEntity<Response<List<UserDto>>> getUserList() {
-        return ResponseEntity.ok(Response.success(userRepository.findAll().stream().map(userConverter::convertToDto).collect(Collectors.toList())));
+        return ResponseEntity.ok(Response.success(userRepository
+                .findAll()
+                .stream()
+                .map(userConverter::convertToDto)
+                .collect(Collectors.toList())));
     }
 
 
@@ -90,18 +92,19 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<Response<String>> deleteUser(final Authentication auth) {
+    public ResponseEntity<Response<String>> deleteUser(final Authentication auth) throws CantRemoveUserException {
         final LoginDbo login = loginRepository.findByUsername(auth.getName());
         final List<UserDbo> userDbos = userRepository.findByLoginDbo(login);
         if (userDbos.size() == 0) {
-            return new ResponseEntity(Response.error("You don't have account"), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CantRemoveUserException("Can't remove, user not found");
         }
         userRepository.deleteByLoginDbo(login);
+        userDbos.forEach(userDbo -> friendRepository.deleteByUserDboId(userDbo.getId()));
         return ResponseEntity.ok(Response.success("User was deleted"));
     }
 
     @Transactional
-    public ResponseEntity<Response<UserDto>> updateUser(final Authentication auth, final UserDto userDto) {
+    public ResponseEntity<Response<UserDto>> updateUser(final Authentication auth, final UserDto userDto) throws CantSaveUserException {
         final List<UserDbo> userDbo = userRepository.findByLoginDbo(loginRepository.findByUsername(auth.getName()));
         if (userDbo.size() != 0) {
             try {
@@ -128,18 +131,19 @@ public class UserService {
                 final Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
                 studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(user));
                 user.setStudies(studyDbos);
-                return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.save(user))));
-            } catch (Exception e) {
-                log.error("can't update current user", e);
-                return new ResponseEntity(Response.error("Error updating current user"), HttpStatus.INTERNAL_SERVER_ERROR);
+                UserDto savingUser = userConverter.convertToDto(userRepository.save(user));
+                return ResponseEntity.ok(Response.success(savingUser));
+            } catch (Exception ex) {
+                throw new CantSaveUserException("Error updating current user");
             }
         }
         return new ResponseEntity(Response.error("You don't have account"), HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<Response<List<UserDto>>> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<Response<List<SearchDto>>> getCurrentUser(Authentication authentication) {
         final LoginDbo login = loginRepository.findByUsername(authentication.getName());
-        return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.findByLoginDbo(login))));
+        List<UserDbo> userDbos = userRepository.findByLoginDbo(login);
+        return ResponseEntity.ok(Response.success(searchService.getSearchDtos(userDbos)));
     }
 
     @Transactional
