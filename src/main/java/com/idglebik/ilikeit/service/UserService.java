@@ -1,7 +1,6 @@
 package com.idglebik.ilikeit.service;
 
 import com.idglebik.ilikeit.config.Response;
-import com.idglebik.ilikeit.converter.FriendConverter;
 import com.idglebik.ilikeit.converter.LifePositionConverter;
 import com.idglebik.ilikeit.converter.StudyConverter;
 import com.idglebik.ilikeit.converter.UserConverter;
@@ -48,7 +47,7 @@ public class UserService {
                 final Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
                 studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(userDbo));
                 userDbo.setStudies(studyDbos);
-                LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
+                LifePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
                 lIfePositionDbo.setUser(userDbo);
                 userDbo.setLIfePosition(lIfePositionDbo);
                 userDbo.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
@@ -122,9 +121,9 @@ public class UserService {
                 user.setHates(userDto.getHates().stream().map(this::getHateDBO).collect(Collectors.toSet()));
                 user.setLanguages(userDto.getLanguages().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
                 user.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
-
+                user.setLoginDbo(user.getLoginDbo());
                 lifePositionRepository.removeByUser(user);
-                LIfePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
+                LifePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
                 lIfePositionDbo.setUser(user);
                 user.setLIfePosition(lIfePositionDbo);
 
@@ -134,6 +133,7 @@ public class UserService {
                 UserDto savingUser = userConverter.convertToDto(userRepository.save(user));
                 return ResponseEntity.ok(Response.success(savingUser));
             } catch (Exception ex) {
+                ex.printStackTrace();
                 throw new CantSaveUserException("Error updating current user");
             }
         }

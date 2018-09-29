@@ -5,18 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Aligment;
 import com.idglebik.ilikeit.enumerated.MainInLife;
 import com.idglebik.ilikeit.enumerated.MainInPeople;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
 @Table(name = "LIFE_POSITION")
-public class LIfePositionDbo {
+public class LifePositionDbo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

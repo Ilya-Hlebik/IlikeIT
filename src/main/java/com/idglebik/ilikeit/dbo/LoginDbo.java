@@ -1,9 +1,7 @@
 package com.idglebik.ilikeit.dbo;
 
 import com.idglebik.ilikeit.enumerated.Role;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -11,6 +9,8 @@ import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "LOGIN")
 public class LoginDbo {
     @Id

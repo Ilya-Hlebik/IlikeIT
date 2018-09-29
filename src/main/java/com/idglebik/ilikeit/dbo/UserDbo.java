@@ -89,7 +89,7 @@ public class UserDbo {
             fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private LIfePositionDbo lIfePosition;
+    private LifePositionDbo lIfePosition;
 
     @ManyToOne
     @JoinColumn(name = "LOGIN_ID")

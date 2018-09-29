@@ -3,10 +3,7 @@ package com.idglebik.ilikeit.dbo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Hate;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
 @Table(name = "I_HATE")
 public class HateDbo {
     @Id

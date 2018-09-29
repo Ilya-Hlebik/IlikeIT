@@ -1,25 +1,22 @@
 package com.idglebik.ilikeit.converter;
 
-import com.idglebik.ilikeit.dbo.LIfePositionDbo;
+import com.idglebik.ilikeit.dbo.LifePositionDbo;
 import com.idglebik.ilikeit.dto.LifePositionDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Service
-public class LifePositionConverter implements DtoConverter<LifePositionDto, LIfePositionDbo>{
+public class LifePositionConverter implements DtoConverter<LifePositionDto, LifePositionDbo>{
     @Override
-    public LifePositionDto convertToDto(final LIfePositionDbo dbo) {
+    public LifePositionDto convertToDto(final LifePositionDbo dbo) {
         final LifePositionDto lifePositionDto = new LifePositionDto();
         BeanUtils.copyProperties(dbo,lifePositionDto);
         return lifePositionDto;
     }
 
     @Override
-    public LIfePositionDbo convertToDbo(final LifePositionDto dto) {
-        final LIfePositionDbo lIfePositionDbo = new LIfePositionDbo();
+    public LifePositionDbo convertToDbo(final LifePositionDto dto) {
+        final LifePositionDbo lIfePositionDbo = new LifePositionDbo();
         BeanUtils.copyProperties(dto, lIfePositionDbo);
         return lIfePositionDbo;
     }

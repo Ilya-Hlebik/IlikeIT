@@ -3,10 +3,7 @@ package com.idglebik.ilikeit.dbo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Position;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
 @Table(name = "POSITION")
 public class PositionDbo {
     @Id
@@ -36,5 +34,6 @@ public class PositionDbo {
     @ToString.Exclude
     @JsonIgnore
     private Set<UserDbo> users;
+
 
 }

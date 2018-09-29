@@ -3,10 +3,7 @@ package com.idglebik.ilikeit.dbo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.idglebik.ilikeit.enumerated.Like;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +11,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "I_LIKE")
 public class LikeDbo {

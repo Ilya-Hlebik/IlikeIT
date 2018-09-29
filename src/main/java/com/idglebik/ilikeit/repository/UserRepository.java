@@ -30,4 +30,5 @@ public interface UserRepository extends JpaRepository<UserDbo, Long> {
     List<UserDbo> findAllByFirstNameAndLastName(String firstName, String lastName);
 
     void deleteByLoginDbo(LoginDbo loginDbo);
+
 }
