@@ -121,7 +121,6 @@ public class UserService {
                 user.setHates(userDto.getHates().stream().map(this::getHateDBO).collect(Collectors.toSet()));
                 user.setLanguages(userDto.getLanguages().stream().map(this::getLanguageDBO).collect(Collectors.toSet()));
                 user.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
-                user.setLoginDbo(user.getLoginDbo());
                 lifePositionRepository.removeByUser(user);
                 LifePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
                 lIfePositionDbo.setUser(user);
@@ -133,7 +132,6 @@ public class UserService {
                 UserDto savingUser = userConverter.convertToDto(userRepository.save(user));
                 return ResponseEntity.ok(Response.success(savingUser));
             } catch (Exception ex) {
-                ex.printStackTrace();
                 throw new CantSaveUserException("Error updating current user");
             }
         }

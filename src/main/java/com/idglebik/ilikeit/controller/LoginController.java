@@ -18,7 +18,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Response<String>> signUp(@RequestBody @Valid LoginDto loginDto) {
+    public ResponseEntity<Response<LoginDbo>> signUp(@RequestBody @Valid LoginDto loginDto) {
         return loginService.signUp(loginDto);
     }
 }

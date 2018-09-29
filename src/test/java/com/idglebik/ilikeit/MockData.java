@@ -1,8 +1,10 @@
 package com.idglebik.ilikeit;
 
+import com.idglebik.ilikeit.config.BCryptPasswordEncoderImpl;
 import com.idglebik.ilikeit.dbo.*;
 import com.idglebik.ilikeit.dto.*;
 import com.idglebik.ilikeit.enumerated.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -12,6 +14,11 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public class MockData {
+    @Bean
+    public static BCryptPasswordEncoderImpl bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoderImpl();
+    }
+
 
     public static UserDbo userDbo() {
         final UserDbo userDbo = new UserDbo();
@@ -35,10 +42,22 @@ public class MockData {
         return userDbo;
     }
 
-    public static LoginDbo loginDboAdmin(){
-       final LoginDbo loginDbo = new LoginDbo();
-       loginDbo.setRoles(Collections.singleton(Role.ADMIN));
-       return loginDbo;
+    public static LoginDbo loginDboAdmin() {
+        BCryptPasswordEncoderImpl bCryptPasswordEncoder = bCryptPasswordEncoder();
+        final LoginDbo loginDbo = new LoginDbo();
+        loginDbo.setUsername("test");
+        loginDbo.setPassword(bCryptPasswordEncoder.encode("test"));
+        loginDbo.setRoles(Collections.singleton(Role.ADMIN));
+        return loginDbo;
+    }
+
+    public static LoginDto loginDto() {
+        BCryptPasswordEncoderImpl bCryptPasswordEncoder = bCryptPasswordEncoder();
+        final LoginDto loginDto = new LoginDto();
+        loginDto.setUsername("test");
+        loginDto.setPassword(bCryptPasswordEncoder.encode("test"));
+        loginDto.setRoles(Collections.singleton(Role.ADMIN));
+        return loginDto;
     }
 
     public static UserDto userDto() {

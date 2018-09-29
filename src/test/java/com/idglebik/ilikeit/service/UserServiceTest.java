@@ -106,22 +106,30 @@ public class UserServiceTest {
         public LangConverter langConverter() {
             return new LangConverter();
         }
+
+        @Bean
+        public BCryptPasswordEncoderImpl bCryptPasswordEncoder() {
+            return new BCryptPasswordEncoderImpl();
+        }
+
+        @MockBean
+        private PositionRepository positionRepository;
+        @MockBean
+        private LanguageRepository languageRepository;
+
+        @MockBean
+        private LikeRepository likeRepository;
+
+        @MockBean
+        private HateRepository hateRepository;
+
+        @MockBean
+        private SearchService searchService;
+
     }
 
     @MockBean
-    private PositionRepository positionRepository;
-
-    @MockBean
     private UserRepository userRepository;
-
-    @MockBean
-    private LanguageRepository languageRepository;
-
-    @MockBean
-    private LikeRepository likeRepository;
-
-    @MockBean
-    private HateRepository hateRepository;
 
     @MockBean
     private LifePositionRepository lifePositionRepository;
@@ -129,18 +137,11 @@ public class UserServiceTest {
     @MockBean
     private LoginRepository loginRepository;
 
-    @MockBean
-    BCryptPasswordEncoderImpl bCryptPasswordEncoder;
-
     @Autowired
     LoginService loginService;
 
     @MockBean
-    private SearchService searchService;
-
-    @MockBean
     private FriendRepository friendRepository;
-
 
     @Autowired
     private UserService userService;
