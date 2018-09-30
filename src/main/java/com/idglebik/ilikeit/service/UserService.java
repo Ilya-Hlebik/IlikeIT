@@ -49,7 +49,7 @@ public class UserService {
                 userDbo.setStudies(studyDbos);
                 LifePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
                 lIfePositionDbo.setUser(userDbo);
-                userDbo.setLIfePosition(lIfePositionDbo);
+                userDbo.setLifePosition(lIfePositionDbo);
                 userDbo.setPositions(userDto.getPositions().stream().map(this::getPositionDBO).collect(Collectors.toSet()));
                 userDbo.setLikes(userDto.getLikes().stream().map(this::getLikeDBO).collect(Collectors.toSet()));
                 userDbo.setHates(userDto.getHates().stream().map(this::getHateDBO).collect(Collectors.toSet()));
@@ -124,7 +124,7 @@ public class UserService {
                 lifePositionRepository.removeByUser(user);
                 LifePositionDbo lIfePositionDbo = lifePositionConverter.convertToDbo(userDto.getLifePosition());
                 lIfePositionDbo.setUser(user);
-                user.setLIfePosition(lIfePositionDbo);
+                user.setLifePosition(lIfePositionDbo);
 
                 final Set<StudyDbo> studyDbos = userDto.getStudies().stream().map(studyConverter::convertToDbo).collect(Collectors.toSet());
                 studyDbos.forEach(studyDbo -> studyDbo.setUserDbo(user));

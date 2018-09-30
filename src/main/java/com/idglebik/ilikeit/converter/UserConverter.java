@@ -35,7 +35,7 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     public UserDto convertToDto(final UserDbo dbo) {
         final UserDto userDto = new UserDto();
         BeanUtils.copyProperties(dbo,userDto);
-        userDto.setLifePosition(lifePositionConverter.convertToDto(dbo.getLIfePosition()));
+        userDto.setLifePosition(lifePositionConverter.convertToDto(dbo.getLifePosition()));
         userDto.setStudies(studyConverter.convertToDto(dbo.getStudies()));
         userDto.setFriendDtos(friendConverter.convertToDto(dbo.getFriendDbos()));
         userDto.setPositions(positionConverter.convertToDto(dbo.getPositions()));
@@ -49,7 +49,7 @@ public class UserConverter implements DtoConverter<UserDto, UserDbo>{
     public UserDbo convertToDbo(final UserDto dto) {
         final UserDbo userDbo = new UserDbo();
         BeanUtils.copyProperties(dto, userDbo);
-        userDbo.setLIfePosition(lifePositionConverter.convertToDbo(dto.getLifePosition()));
+        userDbo.setLifePosition(lifePositionConverter.convertToDbo(dto.getLifePosition()));
         userDbo.setStudies(studyConverter.convertToDbo(dto.getStudies()));
         userDbo.setFriendDbos(friendConverter.convertToDbo(dto.getFriendDtos()));
         userDbo.setPositions(positionConverter.convertToDbo(dto.getPositions()));
