@@ -25,19 +25,19 @@ public class LoginService {
     private final BCryptPasswordEncoderImpl bCryptPasswordEncoder;
     private final UserRepository userRepository;
 
-    public ResponseEntity<Response<LoginDbo>> signUp(LoginDto user) {
+    public ResponseEntity<Response<LoginDto>> signUp(LoginDto user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         if (loginRepository.findByUsername(user.getUsername()) == null) {
             user.setRoles(Collections.singleton(Role.USER));
             LoginDbo dbo = loginRepository.save(loginConverter.convertToDbo(user));
-            return ResponseEntity.ok(Response.success(dbo));
+            return ResponseEntity.ok(Response.success(loginConverter.convertToDto(dbo)));
         } else {
             return new ResponseEntity(Response.error("A user with this name already exists"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean isCanCreateAccount(Authentication authentication) {
-        final LoginDbo login = loginRepository.findByUsername(authentication.getName());
+    public boolean isCanCreateAccount(Authentication auth) {
+        final LoginDbo login = loginRepository.findByUsername(auth.getName());
         return userRepository.findByLoginDbo(login).size() == 0 || login.getRoles().contains(Role.ADMIN);
     }
 

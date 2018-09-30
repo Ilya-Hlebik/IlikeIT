@@ -28,6 +28,55 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 public class LoginServiceTest {
 
+    @Autowired
+    LoginService loginService;
+    @MockBean
+    UserRepository userRepository;
+    @MockBean
+    LoginRepository loginRepository;
+    @Autowired
+    LoginConverter loginConverter;
+    @Autowired
+    BCryptPasswordEncoderImpl bCryptPasswordEncoder;
+
+    @Test
+    public void signUp() {
+        final LoginDto loginDto = MockData.loginDto();
+
+        doReturn(null).when(loginRepository).findByUsername(loginDto.getUsername());
+        doReturn(MockData.loginDboAdmin()).when(loginRepository).save(any(LoginDbo.class));
+
+        final ResponseEntity<Response<LoginDto>> responseUserLogin = loginService.signUp(MockData.loginDto());
+
+        assertNotNull(responseUserLogin.getBody().getData());
+        assertEquals(responseUserLogin.getStatusCode(), HttpStatus.OK);
+        assertEquals(loginDto.getUsername(), responseUserLogin.getBody().getData().getUsername());
+        verify(loginRepository, times(1)).save(any(LoginDbo.class));
+        verify(loginRepository, times(1)).findByUsername(loginDto.getUsername());
+    }
+
+    @Test
+    public void isCanCreateAccount() {
+        doReturn(MockData.loginDboAdmin()).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(new ArrayList<UserDbo>()).when(userRepository).findByLoginDbo(any(LoginDbo.class));
+
+        boolean canCreateAccount = loginService.isCanCreateAccount(MockData.getAuthentication());
+
+        assertTrue(canCreateAccount);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findByLoginDbo(any(LoginDbo.class));
+    }
+
+    @Test
+    public void isUserHavePermission() {
+        doReturn(MockData.loginDboAdmin()).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+
+        boolean userHavePermission = loginService.isUserHavePermission(MockData.getAuthentication());
+
+        assertTrue(userHavePermission);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+    }
+
     @TestConfiguration
     public static class LoginServiceTestConfiguration {
         @Bean
@@ -47,49 +96,5 @@ public class LoginServiceTest {
         public BCryptPasswordEncoderImpl bCryptPasswordEncoder() {
             return new BCryptPasswordEncoderImpl();
         }
-    }
-
-    @Autowired
-    LoginService loginService;
-
-    @MockBean
-    UserRepository userRepository;
-
-    @MockBean
-    LoginRepository loginRepository;
-
-    @Autowired
-    LoginConverter loginConverter;
-
-    @Autowired
-    BCryptPasswordEncoderImpl bCryptPasswordEncoder;
-
-    @Test
-    public void signUp() {
-        final LoginDto loginDto = MockData.loginDto();
-
-        doReturn(null).when(loginRepository).findByUsername(loginDto.getUsername());
-        doReturn(MockData.loginDboAdmin()).when(loginRepository).save(any(LoginDbo.class));
-
-        ResponseEntity<Response<LoginDbo>> responeUserLogin = loginService.signUp(MockData.loginDto());
-
-        verify(loginRepository, times(1)).save(any(LoginDbo.class));
-        verify(loginRepository, times(1)).findByUsername(loginDto.getUsername());
-        assertNotNull(responeUserLogin.getBody().getData());
-        assertEquals(responeUserLogin.getStatusCode(), HttpStatus.OK);
-        assertEquals(loginDto.getUsername(), responeUserLogin.getBody().getData().getUsername());
-    }
-
-    @Test
-    public void isCanCreateAccount() {
-
-        doReturn(MockData.loginDboAdmin()).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
-        doReturn(new ArrayList<UserDbo>()).when(userRepository).findByLoginDbo(any(LoginDbo.class));
-
-        boolean canCreateAccount = loginService.isCanCreateAccount(MockData.getAuthentication());
-
-        assertTrue(canCreateAccount);
-        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
-        verify(userRepository, times(1)).findByLoginDbo(any(LoginDbo.class));
     }
 }
