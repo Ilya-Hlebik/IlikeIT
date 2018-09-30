@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,8 +39,6 @@ public class SearchService {
         final List<UserDbo> userDbos = userRepository.findByHates(hateDbo);
         return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
-
-
 
     public ResponseEntity<Response<List<SearchDto>>> searchUsersByLike(final Like like) {
         final LikeDbo likeDbo = likeRepository.findByLike(like);
@@ -73,8 +70,9 @@ public class SearchService {
         return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
-    public ResponseEntity<Response<List<UserDto>>> findByUserDto(UserDto userDto) {
-        return ResponseEntity.ok(Response.success(userConverter.convertToDto(userRepository.findAllByFirstNameAndLastName(userDto.getFirstName(),userDto.getLastName()))));
+    public ResponseEntity<Response<List<SearchDto>>> findByFirstNameAndLastName(UserDto userDto) {
+        final List<UserDbo> userDbos = userRepository.findAllByFirstNameAndLastName(userDto.getFirstName(), userDto.getLastName());
+        return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
 
     public SearchDto setSearchDtos(UserDbo userDbo) {

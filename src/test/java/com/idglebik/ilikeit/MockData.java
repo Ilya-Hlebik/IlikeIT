@@ -89,6 +89,38 @@ public class MockData {
         return friendDbo;
     }
 
+    public static PositionDbo positionDbo() {
+        final PositionDbo positionDbo = new PositionDbo();
+        positionDbo.setPositionName(Position.WORKER);
+        positionDbo.setUsers(new HashSet<>(Arrays.asList(MockData.userDbo(), MockData.userDbo())));
+        return positionDbo;
+    }
+    public static HateDbo hateDbo(){
+        final HateDbo hateDbo = new HateDbo();
+        hateDbo.setHate(Hate.BOOKS);
+        hateDbo.setUsers(new HashSet<>(Arrays.asList(MockData.userDbo(), MockData.userDbo())));
+        return hateDbo;
+    }
+    public static LikeDbo likeDbo(){
+        final LikeDbo likeDbo = new LikeDbo();
+        likeDbo.setLike(Like.BOOKS);
+        likeDbo.setUsers(new HashSet<>(Arrays.asList(MockData.userDbo(), MockData.userDbo())));
+        return likeDbo;
+    }
+    public static LangDbo langDbo() {
+        final LangDbo langDbo = new LangDbo();
+        langDbo.setLanguage(Language.EN);
+        langDbo.setUsers(new HashSet<>(Arrays.asList(MockData.userDbo(), MockData.userDbo())));
+        return langDbo;
+    }
+
+    public static LifePositionDto lifePositionDto() {
+        final LifePositionDto lifePositionDto = new LifePositionDto();
+        lifePositionDto.setAligment(Aligment.CATOLIC);
+        lifePositionDto.setMainInLife(MainInLife.CAREER);
+        lifePositionDto.setMainInPeople(MainInPeople.BRAIN);
+        return lifePositionDto;
+    }
     public static Authentication getAuthentication() {
         return new Authentication() {
             @Override
@@ -127,4 +159,7 @@ public class MockData {
             }
         };
     }
+
+
+
 }

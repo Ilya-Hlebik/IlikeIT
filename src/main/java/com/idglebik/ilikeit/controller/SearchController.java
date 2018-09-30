@@ -1,7 +1,6 @@
 package com.idglebik.ilikeit.controller;
 
 import com.idglebik.ilikeit.config.Response;
-import com.idglebik.ilikeit.dbo.UserDbo;
 import com.idglebik.ilikeit.dto.LifePositionDto;
 import com.idglebik.ilikeit.dto.SearchDto;
 import com.idglebik.ilikeit.dto.UserDto;
@@ -70,8 +69,8 @@ public class SearchController {
     @ApiOperation("find user by UserDto")
     @PostMapping("/userDbo")
     @ResponseBody
-    public ResponseEntity<Response<List<UserDto>>> findByUserDbo(@RequestBody UserDto userDto) {
-        return searchService.findByUserDto(userDto);
+    public ResponseEntity<Response<List<SearchDto>>> findByUserDbo(@RequestBody UserDto userDto) {
+        return searchService.findByFirstNameAndLastName(userDto);
     }
 
     @ApiOperation("find user by LastName, City, Country")
