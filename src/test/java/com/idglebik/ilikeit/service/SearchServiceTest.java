@@ -115,7 +115,7 @@ public class SearchServiceTest {
         final LifePositionDto lifePositionDto = MockData.lifePositionDto();
         final List<UserDbo> userDbos = Arrays.asList(MockData.userDbo(), MockData.userDbo());
 
-        doReturn(userDbos).when(userRepository).findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople
+        doReturn(userDbos).when(userRepository).findAllByLifePosition_AligmentAndLifePosition_MainInLifeAndLifePosition_MainInPeople
                 (lifePositionDto.getAligment(), lifePositionDto.getMainInLife(), lifePositionDto.getMainInPeople());
 
         ResponseEntity<Response<List<SearchDto>>> searchResponse = searchService.searchUsersByLifePosition(lifePositionDto);
@@ -123,7 +123,7 @@ public class SearchServiceTest {
         assertNotNull(searchResponse.getBody().getData());
         assertEquals(searchResponse.getStatusCode(), HttpStatus.OK);
         assertEquals(searchResponse.getBody().getData().size(), userDbos.size());
-        verify(userRepository, times(1)).findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople
+        verify(userRepository, times(1)).findAllByLifePosition_AligmentAndLifePosition_MainInLifeAndLifePosition_MainInPeople
                 (lifePositionDto.getAligment(), lifePositionDto.getMainInLife(), lifePositionDto.getMainInPeople());
     }
 

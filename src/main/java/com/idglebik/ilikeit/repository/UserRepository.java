@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<UserDbo, Long> {
 
     List<UserDbo> findByLanguages(LangDbo language);
 
-    List<UserDbo> findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople(Aligment aligment, MainInLife mainInLife, MainInPeople mainInPeople);
+    List<UserDbo> findAllByLifePosition_AligmentAndLifePosition_MainInLifeAndLifePosition_MainInPeople(Aligment aligment, MainInLife mainInLife, MainInPeople mainInPeople);
 
     List<UserDbo> findByLikesAndHates(LikeDbo like, HateDbo hate);
 

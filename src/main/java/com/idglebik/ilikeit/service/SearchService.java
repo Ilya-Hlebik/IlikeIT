@@ -53,7 +53,7 @@ public class SearchService {
     }
 
     public ResponseEntity<Response<List<SearchDto>>> searchUsersByLifePosition(final LifePositionDto lifePositionDto) {
-        final List<UserDbo> userDbos = userRepository.findAllByLIfePosition_AligmentAndLIfePosition_MainInLifeAndLIfePosition_MainInPeople(
+        final List<UserDbo> userDbos = userRepository.findAllByLifePosition_AligmentAndLifePosition_MainInLifeAndLifePosition_MainInPeople(
                 lifePositionDto.getAligment(), lifePositionDto.getMainInLife(), lifePositionDto.getMainInPeople());
         return ResponseEntity.ok(Response.success(getSearchDtos(userDbos)));
     }
