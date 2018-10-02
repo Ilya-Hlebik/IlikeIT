@@ -31,7 +31,7 @@ public class ExceptionHandlerController {
     public final ResponseEntity<ExceptionResponse> handleUserBadRequestException(CantSaveUserException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
-        LOGGER.log(Level.WARNING,"Error", exceptionResponse);
+        LOGGER.log(Level.SEVERE,"Error", exceptionResponse);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

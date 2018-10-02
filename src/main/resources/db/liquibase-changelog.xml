@@ -61,22 +61,22 @@
             </column>
         </createTable>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">worker</column>
+            <column name="POSITION_NAME">WORKER</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">developer</column>
+            <column name="POSITION_NAME">DEVELOPER</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">support</column>
+            <column name="POSITION_NAME">SUPPORT</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">businessAnalyst</column>
+            <column name="POSITION_NAME">BUSINESS_ANALYST</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">tester</column>
+            <column name="POSITION_NAME">TESTER</column>
         </insert>
         <insert tableName="POSITION">
-            <column name="POSITION_NAME">manager</column>
+            <column name="POSITION_NAME">MANAGER</column>
         </insert>
         <createTable tableName="USER_POSITION">
             <column name="USER_ID" type="BIGINT">
@@ -118,13 +118,13 @@
             </column>
         </createTable>
         <insert tableName="LANGUAGE">
-            <column name="LANG">de</column>
+            <column name="LANG">DE</column>
         </insert>
         <insert tableName="LANGUAGE">
-            <column name="LANG">ru</column>
+            <column name="LANG">RU</column>
         </insert>
         <insert tableName="LANGUAGE">
-            <column name="LANG">en</column>
+            <column name="LANG">EN</column>
         </insert>
 
         <createTable tableName="USER_LANGUAGE">
@@ -153,16 +153,16 @@
             </column>
         </createTable>
         <insert tableName="I_LIKE">
-            <column name="LIKE">books</column>
+            <column name="LIKE">BOOKS</column>
         </insert>
         <insert tableName="I_LIKE">
-            <column name="LIKE">movies</column>
+            <column name="LIKE">MOVIES</column>
         </insert>
         <insert tableName="I_LIKE">
-            <column name="LIKE">people</column>
+            <column name="LIKE">PEOPLE</column>
         </insert>
         <insert tableName="I_LIKE">
-            <column name="LIKE">coding</column>
+            <column name="LIKE">CODING</column>
         </insert>
 
         <createTable tableName="USER_I_LIKE">
@@ -191,16 +191,16 @@
             </column>
         </createTable>
         <insert tableName="I_HATE">
-            <column name="HATE">books</column>
+            <column name="HATE">BOOKS</column>
         </insert>
         <insert tableName="I_HATE">
-            <column name="HATE">movies</column>
+            <column name="HATE">MOVIES</column>
         </insert>
         <insert tableName="I_HATE">
-            <column name="HATE">people</column>
+            <column name="HATE">PEOPLE</column>
         </insert>
         <insert tableName="I_HATE">
-            <column name="HATE">coding</column>
+            <column name="HATE">CODING</column>
         </insert>
 
         <createTable tableName="USER_I_HATE">
