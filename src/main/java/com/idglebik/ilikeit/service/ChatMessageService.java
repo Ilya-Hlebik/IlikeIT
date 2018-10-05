@@ -59,7 +59,7 @@ public class ChatMessageService {
         final List<UserDbo> userDboList = userRepository.findByLoginDboUsername(auth.getName());
         Boolean isRightUser = userDboList.stream().anyMatch(e -> e.getId() == sender) || loginDbo.getRoles().contains(Role.ADMIN);
         if (!userDbo.isPresent()|| !isRightUser) {
-            return new ResponseEntity(Response.error("can't add to friend List"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(Response.error("can't send message"), HttpStatus.BAD_REQUEST);
         }
         List<ChatMessageDbo> messages = chatMessageRepository.findAllBySenderAndRecipientOrRecipientAndSenderOrderByDateDesc
                 (sender, recipient, sender, recipient);
