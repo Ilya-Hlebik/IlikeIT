@@ -9,6 +9,7 @@ import com.idglebik.ilikeit.dbo.UserDbo;
 import com.idglebik.ilikeit.dto.SearchDto;
 import com.idglebik.ilikeit.dto.UserDto;
 import com.idglebik.ilikeit.enumerated.Role;
+import com.idglebik.ilikeit.exception.CantRemoveUserException;
 import com.idglebik.ilikeit.exception.CantSaveUserException;
 import com.idglebik.ilikeit.repository.*;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -69,6 +71,35 @@ public class UserServiceTest {
         verify(loginRepository, times(2)).findByUsername(MockData.getAuthentication().getName());
     }
 
+    @Test(expected = CantSaveUserException.class)
+    public void createUserWithWrongData() throws CantSaveUserException {
+        final UserDto dto = MockData.userDto();
+        dto.setPositions(null);
+        final LoginDbo loginDbo = new LoginDbo();
+        loginDbo.setRoles(Collections.singleton(Role.ADMIN));
+
+        userService.createUser(dto, MockData.getAuthentication());
+    }
+
+    @Test
+    public void createUserIfYouHaveAcc() throws CantSaveUserException {
+        final UserDbo userDbo = MockData.userDbo();
+        final UserDto dto = MockData.userDto();
+        final LoginDbo loginDbo = new LoginDbo();
+        loginDbo.setRoles(Collections.singleton(Role.USER));
+
+        doReturn(Collections.singletonList(userDbo)).when(userRepository).findByLoginDbo(loginDbo);
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+
+        final ResponseEntity<Response<UserDto>> user = userService.createUser(dto, MockData.getAuthentication());
+
+        assertNull(user.getBody().getData());
+        assertEquals(user.getStatusCode(), HttpStatus.FORBIDDEN);
+        assertTrue(user.getBody().getMessage().contains("You already have an account"));
+        verify(userRepository, times(1)).findByLoginDbo(loginDbo);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+    }
+
     @Test
     public void getUserList() {
         final UserDbo userDbo = MockData.userDbo();
@@ -110,6 +141,18 @@ public class UserServiceTest {
         verify(friendRepository, times(2)).deleteByUserDboId(anyLong());
     }
 
+    @Test(expected = CantRemoveUserException.class)
+    public void deleteUserButCantRemove() {
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final List<UserDbo> userDbos = Collections.emptyList();
+
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(userDbos).when(userRepository).findByLoginDbo(loginDbo);
+
+        userService.deleteUser(MockData.getAuthentication());
+    }
+
+
     @Test
     public void updateUser() throws CantSaveUserException {
         final UserDbo userDbo = MockData.userDbo();
@@ -134,6 +177,42 @@ public class UserServiceTest {
         verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
         verify(userRepository, times(1)).findByLoginDbo(loginDbo);
         verify(userRepository, times(1)).save(userDbo);
+    }
+
+    @Test
+    public void updateUserWithoutAcc() throws CantSaveUserException {
+        final UserDbo userDbo = MockData.userDbo();
+        userDbo.setFirstName("testFirstName");
+        userDbo.setLastName("testLastName");
+        final UserDto dto = userConverter.convertToDto(userDbo);
+        final LoginDbo loginDbo = new LoginDbo();
+        final List<UserDbo> userDbos = Collections.emptyList();
+
+        doReturn(userDbos).when(userRepository).findByLoginDbo(loginDbo);
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+
+        final ResponseEntity<Response<UserDto>> userUpdateResponse = userService.updateUser(MockData.getAuthentication(), dto);
+
+        assertNull(userUpdateResponse.getBody().getData());
+        assertTrue(userUpdateResponse.getBody().getMessage().contains("You don't have account"));
+        assertEquals(userUpdateResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
+        verify(userRepository, times(1)).findByLoginDbo(loginDbo);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+    }
+
+    @Test(expected = CantSaveUserException.class)
+    public void updateUserCantSave() throws CantSaveUserException {
+        final UserDbo userDbo = MockData.userDbo();
+        userDbo.setPositions(null);
+        userDbo.setHates(null);
+        final UserDto dto = userConverter.convertToDto(userDbo);
+        final LoginDbo loginDbo = new LoginDbo();
+        final List<UserDbo> userDbos = Collections.singletonList(userDbo);
+
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(userDbos).when(userRepository).findByLoginDbo(loginDbo);
+
+        userService.updateUser(MockData.getAuthentication(), dto);
     }
 
     @Test

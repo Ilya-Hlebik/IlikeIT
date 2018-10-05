@@ -68,6 +68,67 @@ public class FriendServiceTest {
         verify(userRepository, times(1)).findById(friendId);
         verify(userRepository, times(1)).findById(userId);
         verify(friendRepository, times(1)).findByFriendIdAndUserDbo(friendId, userDbo);
+        verify(friendRepository, times(1)).save(friend);
+    }
+
+    @Test
+    public void addFriendEqualId() {
+        final ResponseEntity<Response<SearchDto>> friendAddResponse = friendService.addFriend(userId, userId, MockData.getAuthentication());
+
+        assertNull(friendAddResponse.getBody().getData());
+        assertTrue(friendAddResponse.getBody().getMessage().contains("you can't add yourself in friend list"));
+        assertEquals(friendAddResponse.getStatusCode(), HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void addFriendDboNotPresent() {
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final UserDbo userDbo = MockData.userDbo();
+        final UserDbo friendDbo = MockData.userDbo();
+        userDbo.setId(userId);
+        friendDbo.setId(friendId);
+        final List<UserDbo> findAllResult = Arrays.asList(userDbo, userDbo);
+
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(Optional.empty()).when(userRepository).findById(userId);
+        doReturn(findAllResult).when(userRepository).findByLoginDboUsername(MockData.getAuthentication().getName());
+
+        final ResponseEntity<Response<SearchDto>> friendAddResponse = friendService.addFriend(friendId, userId, MockData.getAuthentication());
+
+        assertNull(friendAddResponse.getBody().getData());
+        assertEquals(friendAddResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
+        verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void addFriendAlreadyFriends() {
+
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final UserDbo userDbo = MockData.userDbo();
+        final UserDbo friendDbo = MockData.userDbo();
+        userDbo.setId(userId);
+        friendDbo.setId(friendId);
+        final List<UserDbo> findAllResult = Arrays.asList(userDbo, userDbo);
+        final FriendDbo friend = MockData.friendDbo(userDbo, friendId);
+
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(Optional.of(userDbo)).when(userRepository).findById(userId);
+        doReturn(Optional.of(friendDbo)).when(userRepository).findById(friendId);
+        doReturn(findAllResult).when(userRepository).findByLoginDboUsername(MockData.getAuthentication().getName());
+        doReturn(Optional.of(friend)).when(friendRepository).findByFriendIdAndUserDbo(friendId, userDbo);
+
+        final ResponseEntity<Response<SearchDto>> friendAddResponse = friendService.addFriend(friendId, userId, MockData.getAuthentication());
+
+        assertNull(friendAddResponse.getBody().getData());
+        assertEquals(friendAddResponse.getStatusCode(), HttpStatus.NOT_ACCEPTABLE);
+        assertTrue(friendAddResponse.getBody().getMessage().contains("you are already friends"));
+        verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findById(friendId);
+        verify(userRepository, times(1)).findById(userId);
+        verify(friendRepository, times(1)).findByFriendIdAndUserDbo(friendId, userDbo);
     }
 
     @Test
@@ -85,6 +146,18 @@ public class FriendServiceTest {
         verify(userRepository, times(1)).findById(userDbo.getId());
         verify(userRepository, times(3)).findById(anyLong());
         verify(friendRepository, times(0)).deleteByFriendId(anyLong());
+    }
+    @Test
+    public void getFriendListDboNotPresent() {
+        final UserDbo userDbo = MockData.userDbo();
+
+        doReturn(Optional.empty()).when(userRepository).findById(userDbo.getId());
+
+        final ResponseEntity<Response<List<SearchDto>>> friendResponseList = friendService.getFriendList(userDbo.getId());
+
+        assertNull(friendResponseList.getBody().getData());
+        assertEquals(friendResponseList.getStatusCode(), HttpStatus.BAD_REQUEST);
+        verify(userRepository, times(1)).findById(userDbo.getId());
     }
 
     @Test
@@ -110,6 +183,60 @@ public class FriendServiceTest {
         verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
         verify(friendRepository, times(1)).findByFriendIdAndUserDbo(friendId, userDbo);
         verify(friendRepository, times(1)).deleteById(friend.getId());
+    }
+
+    @Test
+    public void deleteFromFriendListWithEqualsId(){
+
+        final ResponseEntity<Response<String>> deleteResponse = friendService.deleteFromFriendList(userId, userId, MockData.getAuthentication());
+
+        assertNull(deleteResponse.getBody().getData());
+        assertTrue(deleteResponse.getBody().getMessage().contains("wrong user or friend Id"));
+        assertEquals(deleteResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    public void deleteFromFriendListFriendNotPresent(){
+        final UserDbo userDbo = MockData.userDbo();
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final List<UserDbo> findAllResult = Arrays.asList(userDbo, userDbo);
+        final FriendDbo friend = MockData.friendDbo(userDbo, friendId);
+
+        doReturn(Optional.of(userDbo)).when(userRepository).findById(userId);
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(findAllResult).when(userRepository).findByLoginDboUsername(MockData.getAuthentication().getName());
+        doReturn(Optional.empty()).when(friendRepository).findByFriendIdAndUserDbo(friendId, userDbo);
+
+        final ResponseEntity<Response<String>> deleteResponse = friendService.deleteFromFriendList(friendId, userId, MockData.getAuthentication());
+
+        assertNull(deleteResponse.getBody().getData());
+        assertTrue(deleteResponse.getBody().getMessage().contains("friend not found"));
+        assertEquals(deleteResponse.getStatusCode(), HttpStatus.NOT_FOUND);
+        verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findById(userId);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+        verify(friendRepository, times(1)).findByFriendIdAndUserDbo(friendId, userDbo);
+
+    }
+
+    @Test
+    public void deleteFromFriendListIsRightUser(){
+        final UserDbo userDbo = MockData.userDbo();
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final List<UserDbo> findAllResult = Arrays.asList(userDbo, userDbo);
+
+        doReturn(Optional.empty()).when(userRepository).findById(userId);
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(findAllResult).when(userRepository).findByLoginDboUsername(MockData.getAuthentication().getName());
+
+        final ResponseEntity<Response<String>> deleteResponse = friendService.deleteFromFriendList(friendId, userId, MockData.getAuthentication());
+
+        assertNull(deleteResponse.getBody().getData());
+        assertTrue(deleteResponse.getBody().getMessage().contains("can't remove from friend List"));
+        assertEquals(deleteResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
+        verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findById(userId);
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+
     }
 
     @TestConfiguration

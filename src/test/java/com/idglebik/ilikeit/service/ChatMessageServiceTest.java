@@ -61,6 +61,7 @@ public class ChatMessageServiceTest {
         doReturn(chatMessageConverter.convertToDbo(chatMessageDto)).when(chatMessageRepository).save(any(ChatMessageDbo.class));
 
         ResponseEntity<Response<ChatMessageResponseDto>> sendMessageResponse = chatMessageService.sendMessage(chatMessageDto, MockData.getAuthentication());
+
         assertNotNull(sendMessageResponse.getBody().getData());
         assertEquals(sendMessageResponse.getStatusCode(), HttpStatus.OK);
         assertEquals(sendMessageResponse.getBody().getData().getContent(), chatMessageDto.getContent());
@@ -70,6 +71,30 @@ public class ChatMessageServiceTest {
         verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
         verify(chatMessageRepository, times(1)).save(any(ChatMessageDbo.class));
 
+    }
+
+    @Test
+    public void getMessages() {
+        final ChatMessageDto chatMessageDto = MockData.chatMessageDto();
+        final Optional<UserDbo> userDbo = Optional.of(MockData.userDbo());
+        final List<UserDbo> findAllResult = Arrays.asList(userDbo.get(), userDbo.get());
+        final LoginDbo loginDbo = MockData.loginDboAdmin();
+        final List<ChatMessageDbo> messages = Arrays.asList(MockData.chatMessageDbo(), MockData.chatMessageDbo());
+
+        doReturn(loginDbo).when(loginRepository).findByUsername(MockData.getAuthentication().getName());
+        doReturn(userDbo).when(userRepository).findById(chatMessageDto.getSender());
+        doReturn(findAllResult).when(userRepository).findByLoginDboUsername(MockData.getAuthentication().getName());
+        doReturn(messages).when(chatMessageRepository).findAllBySenderAndRecipientOrRecipientAndSenderOrderByDateDesc(
+                chatMessageDto.getSender(), chatMessageDto.getRecipient(), chatMessageDto.getSender(), chatMessageDto.getRecipient());
+
+
+        chatMessageService.getMessages(chatMessageDto.getSender(), chatMessageDto.getRecipient(), MockData.getAuthentication());
+
+        verify(userRepository, times(1)).findById(chatMessageDto.getSender());
+        verify(loginRepository, times(1)).findByUsername(MockData.getAuthentication().getName());
+        verify(userRepository, times(1)).findByLoginDboUsername(MockData.getAuthentication().getName());
+        verify(chatMessageRepository, times(1)).findAllBySenderAndRecipientOrRecipientAndSenderOrderByDateDesc(
+                chatMessageDto.getSender(), chatMessageDto.getRecipient(), chatMessageDto.getSender(), chatMessageDto.getRecipient());
     }
 
     @TestConfiguration
